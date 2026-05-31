@@ -104,6 +104,11 @@ body::after {
   padding: 12px 60px;
 }
 .nav-logo { height: 38px; width: auto; }
+/* Logo link — 44px minimum tap target (WCAG 2.5.5) */
+.site-nav > a:first-of-type {
+  display: inline-flex; align-items: center;
+  min-height: 44px; min-width: 44px;
+}
 .nav-right { display: flex; align-items: center; gap: 32px; }
 .nav-link {
   font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 12px;
@@ -246,7 +251,9 @@ body::after {
 @media (max-width: 768px) {
   .hero-banner {
     min-height: auto;
-    background-image: none; /* stack instead of crop */
+    flex-direction: column;     /* stack image over text */
+    align-items: stretch;
+    background-image: none;     /* stack instead of crop */
     background-color: var(--green-dark);
   }
   /* Image becomes a top band so spices stay visible */
@@ -489,7 +496,7 @@ body::after {
   display: block;
   font-family: 'Cormorant Garamond', serif; font-style: italic;
   font-size: 14px; letter-spacing: 0.02em;
-  color: var(--ink-mid); opacity: 0.6;
+  color: var(--ink-mid); /* solid — AA on cream */
 }
 
 /* Headline: French primary */
@@ -505,7 +512,7 @@ body::after {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 300;
   font-size: clamp(17px, 1.8vw, 21px);
-  color: var(--ink-mid); opacity: 0.55;
+  color: var(--ink-mid); /* solid — AA on cream */
   margin-bottom: 36px;
 }
 
@@ -553,7 +560,7 @@ body::after {
 .story-transition-en {
   font-family: 'DM Sans', sans-serif; font-weight: 500;
   font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--gold); margin-top: 2px;
+  color: var(--ink-mid); margin-top: 2px; /* darkened — gold fails AA on cream */
 }
 .story-transition-line {
   width: 1px; height: 40px; margin-top: 14px;
@@ -561,6 +568,24 @@ body::after {
 }
 @media (prefers-reduced-motion: no-preference) {
   .story-transition:hover .story-transition-line { height: 52px; transition: height 0.4s var(--ease-out); }
+}
+
+/* ═══════════════════════════════════════
+   MOBILE FONT FLOOR — Studio26: min 14px on mobile
+   (micro-labels in Hero Banner + Story bumped for legibility)
+═══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .hero-banner-eyebrow,
+  .btn-bi .bi-fr,
+  .btn-bi .bi-en,
+  .story-eyebrow-fr,
+  .story-signature,
+  .story-transition-en,
+  .nav-cta { font-size: 14px; }
+  /* tighten tracking so bumped caps don't overflow narrow screens */
+  .story-signature { letter-spacing: 0.14em; }
+  .hero-banner-eyebrow { letter-spacing: 0.22em; }
+  .story-transition-en { letter-spacing: 0.22em; }
 }
 
 /* ═══════════════════════════════════════
