@@ -7,7 +7,6 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
 <style>
 /* ═══════════════════════════════════════
@@ -471,55 +470,97 @@ body::after {
 }
 .story-image-side:hover img { transform: scale(1.03); }
 .story-text-side {
-  padding: 100px 80px;
+  padding: 110px 80px;
   display: flex; flex-direction: column; justify-content: center;
   background: var(--cream);
 }
+/* Restrained measure — keeps the narrative intimate */
+.story-text-inner { max-width: 480px; }
+
+/* Bilingual eyebrow */
+.story-eyebrow { display: block; margin-bottom: 28px; }
+.story-eyebrow-fr {
+  display: block;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 5px;
+}
+.story-eyebrow-en {
+  display: block;
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 14px; letter-spacing: 0.02em;
+  color: var(--ink-mid); opacity: 0.6;
+}
+
+/* Headline: French primary */
 .story-heading {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 300;
-  font-size: clamp(42px, 5vw, 68px);
-  color: var(--ink); line-height: 1.05;
-  margin: 20px 0 36px;
+  font-size: clamp(34px, 3.8vw, 50px);
+  color: var(--ink); line-height: 1.08;
+  margin: 0 0 8px;
 }
+/* English supportive subline */
+.story-heading-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(17px, 1.8vw, 21px);
+  color: var(--ink-mid); opacity: 0.55;
+  margin-bottom: 36px;
+}
+
 .story-para {
-  font-size: 16px; line-height: 1.8;
-  color: var(--ink-mid); margin-bottom: 22px;
+  font-size: 16px; line-height: 1.85;
+  color: var(--ink-mid); margin-bottom: 20px;
 }
-.story-blockquote {
-  margin-top: 40px; padding: 28px 32px;
-  border-left: 3px solid var(--gold);
-  background: rgba(201,146,42,0.06);
+
+/* Signature block — understated */
+.story-signature {
+  display: flex; align-items: center; flex-wrap: wrap;
+  gap: 14px; margin-top: 44px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--ink-mid);
 }
-.story-blockquote p {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 24px;
-  color: var(--ink); line-height: 1.5;
-}
-.story-blockquote cite {
-  display: block; margin-top: 14px;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 11px; letter-spacing: 0.2em;
-  text-transform: uppercase; color: var(--gold);
-  font-style: normal;
-}
-.story-caption {
-  background: var(--green); padding: 20px 28px;
-}
-.story-caption .label { display: block; margin-bottom: 6px; }
-.story-caption p {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 15px;
-  color: rgba(245,236,215,0.8); line-height: 1.5;
+.story-sig-divider {
+  width: 18px; height: 1px; background: var(--gold); opacity: 0.6;
 }
 
 @media (max-width: 1024px) {
   #story { grid-template-columns: 1fr; }
-  .story-image-side { height: 60vw; min-height: 340px; }
-  .story-text-side { padding: 72px 40px; }
+  .story-image-side { height: 62vw; min-height: 360px; }
+  .story-text-side { padding: 80px 40px; }
+  .story-text-inner { max-width: 560px; }
 }
 @media (max-width: 768px) {
   .story-text-side { padding: 64px 24px; }
+}
+
+/* ── Story → Collection transition cue ── */
+.story-transition {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; padding: 56px 0 64px;
+  background: var(--cream);
+  text-decoration: none;
+  transition: background 0.4s ease;
+}
+.story-transition:hover { background: var(--cream-dark); }
+.story-transition-fr {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: clamp(26px, 3vw, 36px);
+  color: var(--ink); line-height: 1;
+}
+.story-transition-en {
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-top: 2px;
+}
+.story-transition-line {
+  width: 1px; height: 40px; margin-top: 14px;
+  background: linear-gradient(180deg, var(--gold), transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .story-transition:hover .story-transition-line { height: 52px; transition: height 0.4s var(--ease-out); }
 }
 
 /* ═══════════════════════════════════════
@@ -1023,7 +1064,7 @@ footer {
 
 <!-- ══════════════ NAV ══════════════ -->
 <nav class="site-nav" aria-label="Main navigation">
-  <a href="#hero" aria-label="Mala — home">
+  <a href="#hero-banner" aria-label="Mala — home">
     <img src="logo.png" alt="Mala" class="nav-logo">
   </a>
   <div class="nav-right">
@@ -1054,7 +1095,7 @@ footer {
         <div class="hero-banner-ctas">
           <a href="#order" class="btn-gold btn-bi">
             <span class="bi-fr" lang="fr">Première Récolte</span>
-            <span class="bi-en">Pre-order the First Batch</span>
+            <span class="bi-en">Pre-order the Next Batch</span>
           </a>
           <a href="#story" class="btn-ghost btn-bi">
             <span class="bi-fr" lang="fr">Notre Histoire</span>
@@ -1071,173 +1112,49 @@ footer {
   </div>
 </section>
 
-<!-- ══════════════ HERO SLIDER ══════════════ -->
-<section id="hero" aria-label="Hero">
-  <div class="swiper hero-swiper">
-    <div class="swiper-wrapper">
-
-      <!-- Slide 1: The Collection -->
-      <div class="swiper-slide hero-slide">
-        <div class="wrap" style="width:100%;max-width:100%;padding:0;">
-          <div class="hero-slide-inner" style="max-width:1360px;margin:0 auto;padding:0 60px;">
-            <div class="hero-text">
-              <span class="hero-slide-num">01 / 03</span>
-              <span class="label hero-eyebrow">Artisanal Spices · Mauritius</span>
-              <span class="hero-wordmark" aria-hidden="true">Mala</span>
-              <p class="hero-sub">Made by hand.<br>Thirty years in the making.</p>
-              <div class="hero-rule" aria-hidden="true"></div>
-              <p class="hero-body-text">Three family blends from Mauritius — roasted, ground, and packed with three decades of care. Nothing added. Nothing removed.</p>
-              <div class="hero-ctas">
-                <a href="#order"    class="btn-gold">Pre-order Now</a>
-                <a href="#products" class="btn-ghost">Explore Blends</a>
-              </div>
-              <span class="hero-made">Made in Mauritius — Est. 1993</span>
-            </div>
-            <div class="hero-image-panel">
-              <svg class="hero-botanical" viewBox="0 0 400 400" aria-hidden="true" focusable="false">
-                <ellipse cx="200" cy="200" rx="170" ry="80" transform="rotate(-25 200 200)"/>
-                <ellipse cx="200" cy="200" rx="130" ry="55" transform="rotate(15 200 200)"/>
-                <line x1="200" y1="20" x2="200" y2="380"/>
-                <path d="M200 110 Q250 85 275 130 Q250 175 200 155 Q150 175 125 130 Q150 85 200 110Z"/>
-                <path d="M200 195 Q260 165 290 210 Q260 255 200 235 Q140 255 110 210 Q140 165 200 195Z"/>
-                <path d="M200 275 Q240 255 260 288 Q240 320 200 305 Q160 320 140 288 Q160 255 200 275Z"/>
-                <circle cx="200" cy="60" r="5"/>
-                <circle cx="200" cy="340" r="3"/>
-              </svg>
-              <img src="pouches.png" alt="Mala artisanal spice pouches — the full collection">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 2: The Gift -->
-      <div class="swiper-slide hero-slide">
-        <div style="width:100%;max-width:100%;padding:0;">
-          <div class="hero-slide-inner" style="max-width:1360px;margin:0 auto;padding:0 60px;">
-            <div class="hero-text">
-              <span class="hero-slide-num">02 / 03</span>
-              <span class="label hero-eyebrow">Gift Collection</span>
-              <h2 class="hero-wordmark" style="font-size:clamp(56px,8vw,110px);">The Art<br>of Gifting</h2>
-              <div class="hero-rule" aria-hidden="true"></div>
-              <p class="hero-body-text">Every set is assembled by hand, wrapped in tissue, and finished with a handwritten card. The finest gift from the island.</p>
-              <div class="hero-ctas">
-                <a href="#gifts" class="btn-gold">View Gift Sets</a>
-                <a href="#order" class="btn-ghost">Pre-order</a>
-              </div>
-              <span class="hero-made">Handwritten cards · Ribbon-wrapped</span>
-            </div>
-            <div class="hero-image-panel">
-              <img src="tins.png" alt="Mala gift box open with three spice tins inside">
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Slide 3: The Set -->
-      <div class="swiper-slide hero-slide">
-        <div style="width:100%;max-width:100%;padding:0;">
-          <div class="hero-slide-inner" style="max-width:1360px;margin:0 auto;padding:0 60px;">
-            <div class="hero-text">
-              <span class="hero-slide-num">03 / 03</span>
-              <span class="label hero-eyebrow">Limited First Batch</span>
-              <h2 class="hero-wordmark" style="font-size:clamp(52px,7.5vw,108px);">Reserve<br>Yours.</h2>
-              <div class="hero-rule" aria-hidden="true"></div>
-              <p class="hero-body-text">First batch is strictly limited. Pre-order now and we will confirm personally — no automated emails, no chatbots. Just family.</p>
-              <div class="hero-ctas">
-                <a href="#order" class="btn-gold">Pre-order Now</a>
-              </div>
-              <span class="hero-made">First batch · Limited quantity</span>
-            </div>
-            <div class="hero-image-panel">
-              <img src="set.png" alt="Mala complete gift set presented with luxury packaging">
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /swiper-wrapper -->
-
-    <!-- Custom Nav -->
-    <div class="hero-nav-bar">
-      <button class="hero-btn hero-prev-btn" aria-label="Previous slide">&#8592;</button>
-      <div class="hero-progress"><div class="hero-progress-bar" id="heroProgressBar"></div></div>
-      <span class="hero-fraction" id="heroFraction">01 / 03</span>
-      <button class="hero-btn hero-next-btn" aria-label="Next slide">&#8594;</button>
-    </div>
-
-  </div>
-</section>
-
-<!-- ══════════════ MARQUEE ══════════════ -->
-<div class="marquee-band" aria-hidden="true">
-  <div class="marquee-inner">
-    <span>Made in Mauritius</span><span class="dot">·</span>
-    <span>Small Batch</span><span class="dot">·</span>
-    <span>Handcrafted Since 1993</span><span class="dot">·</span>
-    <span>No Preservatives</span><span class="dot">·</span>
-    <span>Family Recipe</span><span class="dot">·</span>
-    <span>Three Generations</span><span class="dot">·</span>
-    <span>Ships Worldwide</span><span class="dot">·</span>
-    <!-- duplicate for seamless loop -->
-    <span>Made in Mauritius</span><span class="dot">·</span>
-    <span>Small Batch</span><span class="dot">·</span>
-    <span>Handcrafted Since 1993</span><span class="dot">·</span>
-    <span>No Preservatives</span><span class="dot">·</span>
-    <span>Family Recipe</span><span class="dot">·</span>
-    <span>Three Generations</span><span class="dot">·</span>
-    <span>Ships Worldwide</span><span class="dot">·</span>
-  </div>
-</div>
-
-<!-- ══════════════ STORY ══════════════ -->
+<!-- ══════════════ STORY · NOTRE HISTOIRE ══════════════ -->
 <section id="story" aria-labelledby="story-heading">
   <div class="story-image-side reveal-left">
-    <img src="tins.png" alt="Mala gift box open showing three golden spice tins">
-    <div class="story-caption">
-      <span class="label">Mauritius, 1993</span>
-      <p>Where every recipe begins with love, and ends on your table.</p>
-    </div>
+    <img src="story-bg.png" alt="A traditional Mauritian kitchen — spices roasting by hand in a steel pan beside brass pots, mortar and pestle, and loose spices on a wooden table">
   </div>
   <div class="story-text-side">
-    <span class="label reveal">The Story</span>
-    <h2 id="story-heading" class="story-heading reveal reveal-d1">
-      A grandmother's<br>secret, now<br>yours to keep.
-    </h2>
-    <p class="story-para reveal reveal-d2">
-      For thirty years, Mala's blends have been the quiet soul of Sunday lunches, wedding feasts, and first meals in a new home. Mixed by hand in small batches, never rushed, never compromised.
-    </p>
-    <p class="story-para reveal reveal-d3">
-      Each tin carries the same proportions she wrote on the back of an envelope in 1993. The pen marks are still there. We kept them.
-    </p>
-    <p class="story-para reveal reveal-d4">
-      Mala is not a product. It is an inheritance — repackaged for those who have never tasted what a spice blend made with actual care feels like.
-    </p>
-    <blockquote class="story-blockquote reveal reveal-d5">
-      <p>"You don't need a recipe when the spice already knows what it is doing."</p>
-      <cite>— Mala, Matriarch</cite>
-    </blockquote>
+    <div class="story-text-inner">
+      <span class="story-eyebrow reveal">
+        <span class="story-eyebrow-fr" lang="fr">Notre Histoire</span>
+        <span class="story-eyebrow-en">Our Story</span>
+      </span>
+      <h2 id="story-heading" class="story-heading reveal reveal-d1" lang="fr">
+        Tout a commencé dans une cuisine familiale.
+      </h2>
+      <p class="story-heading-en reveal reveal-d1">It all began in a family kitchen.</p>
+
+      <p class="story-para reveal reveal-d2">
+        Long before Mala became a brand, it was simply the blend prepared for family meals, celebrations and gatherings.
+      </p>
+      <p class="story-para reveal reveal-d3">
+        Roasted and ground by hand, each batch followed the same recipe carefully refined over decades.
+      </p>
+      <p class="story-para reveal reveal-d4">
+        What began in one Mauritian kitchen became a tradition shared across generations. Today, that tradition continues exactly as it always has: patiently, carefully and without compromise.
+      </p>
+
+      <div class="story-signature reveal reveal-d5" aria-label="Made in Mauritius. Roasted by Hand. Since 1993.">
+        <span>Made in Mauritius.</span>
+        <span class="story-sig-divider" aria-hidden="true"></span>
+        <span>Roasted by Hand.</span>
+        <span class="story-sig-divider" aria-hidden="true"></span>
+        <span lang="fr">Depuis 1993.</span>
+      </div>
+    </div>
   </div>
 </section>
 
-<!-- ══════════════ STATS ══════════════ -->
-<div class="stats-band" aria-label="Brand milestones">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat-item reveal">
-        <span class="stat-number" data-target="30">0</span>
-        <span class="stat-label">Years of Family Recipe</span>
-      </div>
-      <div class="stat-item reveal reveal-d2">
-        <span class="stat-number" data-target="3">0</span>
-        <span class="stat-label">Artisanal Blends</span>
-      </div>
-      <div class="stat-item reveal reveal-d4">
-        <span class="stat-number" data-target="1">0</span>
-        <span class="stat-label">Family — One Story</span>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- Transition cue into La Collection -->
+<a href="#products" class="story-transition" aria-label="Continue to the collection">
+  <span class="story-transition-fr" lang="fr">La Collection</span>
+  <span class="story-transition-en">The Collection</span>
+  <span class="story-transition-line" aria-hidden="true"></span>
+</a>
 
 <!-- ══════════════ PRODUCTS ══════════════ -->
 <section id="products" aria-labelledby="products-heading">
@@ -1511,40 +1428,9 @@ footer {
   </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 <script>
 // ── Config ──
 const WHATSAPP_NUMBER = '23057123456'; // UPDATE THIS
-
-// ── Swiper ──
-const swiper = new Swiper('.hero-swiper', {
-  loop: true,
-  speed: 900,
-  effect: 'fade',
-  fadeEffect: { crossFade: true },
-  autoplay: { delay: 6000, disableOnInteraction: false },
-  keyboard: { enabled: true },
-  a11y: {
-    prevSlideMessage: 'Previous slide',
-    nextSlideMessage: 'Next slide',
-  },
-  on: {
-    slideChange: function () {
-      const idx   = ((this.realIndex) % 3) + 1;
-      const total = 3;
-      const frac  = document.getElementById('heroFraction');
-      const bar   = document.getElementById('heroProgressBar');
-      if (frac) frac.textContent = String(idx).padStart(2,'0') + ' / ' + String(total).padStart(2,'0');
-      if (bar)  bar.style.width  = (idx / total * 100) + '%';
-    }
-  }
-});
-
-document.querySelector('.hero-prev-btn').addEventListener('click', () => swiper.slidePrev());
-document.querySelector('.hero-next-btn').addEventListener('click', () => swiper.slideNext());
-
-// Init progress bar
-document.getElementById('heroProgressBar').style.width = '33.3%';
 
 // ── Nav scroll class ──
 const siteNav = document.querySelector('.site-nav');
