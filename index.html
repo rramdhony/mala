@@ -460,6 +460,35 @@ body::after {
 }
 
 /* ═══════════════════════════════════════
+   SHARED SECTION HEADER LOCKUP
+   Big French display + tracked English caps (the "pop")
+═══════════════════════════════════════ */
+.section-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(46px, 5.4vw, 74px);
+  color: var(--ink); line-height: 1.0; letter-spacing: -0.01em;
+  margin: 0 0 12px;
+}
+.section-title-en {
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 12px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: var(--gold-deep); margin: 0 0 28px;
+}
+.section-subhead {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(23px, 2.5vw, 32px);
+  color: var(--ink); line-height: 1.25; margin: 0 0 6px;
+}
+.section-subhead-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(16px, 1.7vw, 20px);
+  color: var(--ink-mid); margin: 0 0 30px;
+}
+
+/* ═══════════════════════════════════════
    STORY SECTION
 ═══════════════════════════════════════ */
 #story {
@@ -582,7 +611,7 @@ body::after {
   .story-eyebrow-fr,
   .story-signature,
   .story-transition-en,
-  .collection-eyebrow-fr,
+  .section-title-en,
   .collection-descriptor,
   .collection-transition-en,
   .nav-cta { font-size: 14px; }
@@ -1105,14 +1134,10 @@ footer {
   </div>
   <div class="story-text-side">
     <div class="story-text-inner">
-      <span class="story-eyebrow reveal">
-        <span class="story-eyebrow-fr" lang="fr">Notre Histoire</span>
-        <span class="story-eyebrow-en">Our Story</span>
-      </span>
-      <h2 id="story-heading" class="story-heading reveal reveal-d1" lang="fr">
-        Tout a commencé dans une cuisine familiale.
-      </h2>
-      <p class="story-heading-en reveal reveal-d1">It all began in a family kitchen.</p>
+      <h2 id="story-heading" class="section-title reveal" lang="fr">Notre Histoire</h2>
+      <p class="section-title-en reveal">Our Story</p>
+      <p class="section-subhead reveal reveal-d1" lang="fr">Tout a commencé dans une cuisine familiale.</p>
+      <p class="section-subhead-en reveal reveal-d1">It all began in a family kitchen.</p>
 
       <p class="story-para reveal reveal-d2">
         Long before Mala became a brand, it was simply the blend prepared for family meals, celebrations and gatherings.
@@ -1140,12 +1165,10 @@ footer {
   <div class="wrap">
 
     <div class="collection-intro">
-      <span class="collection-eyebrow reveal">
-        <span class="collection-eyebrow-fr" lang="fr">La Collection</span>
-        <span class="collection-eyebrow-en">The Collection</span>
-      </span>
-      <h2 id="collection-heading" class="collection-heading reveal reveal-d1" lang="fr">Trois mélanges. Une tradition.</h2>
-      <p class="collection-heading-en reveal reveal-d1">Three blends. One tradition.</p>
+      <h2 id="collection-heading" class="section-title reveal" lang="fr">La Collection</h2>
+      <p class="section-title-en reveal">The Collection</p>
+      <p class="section-subhead reveal reveal-d1" lang="fr">Trois mélanges. Une tradition.</p>
+      <p class="section-subhead-en reveal reveal-d1">Three blends. One tradition.</p>
       <p class="collection-lede reveal reveal-d2">
         Each Mala blend begins with the same philosophy: carefully selected spices, roasted with patience and blended with purpose.
       </p>
