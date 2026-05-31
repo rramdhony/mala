@@ -169,17 +169,42 @@ body::after {
 .hero-banner-title {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 300;
-  font-size: clamp(48px, 6vw, 86px);
+  font-size: clamp(52px, 6.4vw, 92px);
   color: var(--cream);
-  line-height: 1.04; letter-spacing: -0.01em;
-  margin-bottom: 32px;
+  line-height: 1.02; letter-spacing: -0.015em;
+  margin-bottom: 14px;
 }
-.hero-banner-title em {
-  font-style: italic;
-  color: var(--gold-light);
+.hero-banner-subtitle {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(19px, 2vw, 26px);
+  color: rgba(245,236,215,0.62);
+  letter-spacing: 0.01em;
+  margin-bottom: 30px;
 }
 .hero-banner-rule {
   width: 56px; height: 1px; background: var(--gold); margin-bottom: 32px;
+}
+
+/* Bilingual buttons — French primary, English supportive */
+.btn-bi {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 14px 36px;
+  min-height: 60px;
+  line-height: 1.1;
+  text-align: center;
+}
+.btn-bi .bi-fr {
+  font-family: 'DM Sans', sans-serif; font-weight: 600;
+  font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase;
+}
+.btn-bi .bi-en {
+  font-family: 'DM Sans', sans-serif; font-weight: 400;
+  font-size: 10px; letter-spacing: 0.06em; text-transform: none;
+  opacity: 0.7;
 }
 .hero-banner-body {
   font-family: 'DM Sans', sans-serif; font-weight: 300;
@@ -1019,17 +1044,22 @@ footer {
   <div class="hero-banner-content">
     <div class="hero-banner-inner">
       <div class="hero-banner-text">
-        <span class="label hero-banner-eyebrow">Made in Mauritius · Est. 1993</span>
-        <h2 id="hero-banner-title" class="hero-banner-title">
-          The spice of a thousand<br><em>Sunday tables.</em>
-        </h2>
+        <span class="label hero-banner-eyebrow">Made in Mauritius · <span lang="fr">Depuis 1993</span></span>
+        <h1 id="hero-banner-title" class="hero-banner-title" lang="fr">L'Art du Masala Grillé</h1>
+        <p class="hero-banner-subtitle">The Art of Roasted Spice.</p>
         <div class="hero-banner-rule" aria-hidden="true"></div>
         <p class="hero-banner-body">
-          Roasted, ground, and packed by hand on the island — a thirty-year family recipe, now opening to the world for the very first time.
+          For more than thirty years, Mala has seasoned family gatherings, wedding feasts and Sunday tables across Mauritius. Roasted, ground and blended by hand, it now begins a new journey beyond our island.
         </p>
         <div class="hero-banner-ctas">
-          <a href="#order" class="btn-gold">Pre-order the First Batch</a>
-          <a href="#story" class="btn-ghost">Our Story</a>
+          <a href="#order" class="btn-gold btn-bi">
+            <span class="bi-fr" lang="fr">Première Récolte</span>
+            <span class="bi-en">Pre-order the First Batch</span>
+          </a>
+          <a href="#story" class="btn-ghost btn-bi">
+            <span class="bi-fr" lang="fr">Notre Histoire</span>
+            <span class="bi-en">Discover Our Story</span>
+          </a>
         </div>
       </div>
     </div>
@@ -1053,7 +1083,7 @@ footer {
             <div class="hero-text">
               <span class="hero-slide-num">01 / 03</span>
               <span class="label hero-eyebrow">Artisanal Spices · Mauritius</span>
-              <h1 class="hero-wordmark">Mala</h1>
+              <span class="hero-wordmark" aria-hidden="true">Mala</span>
               <p class="hero-sub">Made by hand.<br>Thirty years in the making.</p>
               <div class="hero-rule" aria-hidden="true"></div>
               <p class="hero-body-text">Three family blends from Mauritius — roasted, ground, and packed with three decades of care. Nothing added. Nothing removed.</p>
