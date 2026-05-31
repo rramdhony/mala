@@ -18,6 +18,7 @@
   --green-dark:  #0f2a1e;
   --gold:        #C9922A;
   --gold-light:  #E8B84B;
+  --gold-deep:   #7A5418;   /* AA-safe gold for labels on light/cream backgrounds (5.7:1) */
   --amber:       #C8841A;
   --burgundy:    #6B1E2E;
   --cream:       #F5ECD7;
@@ -490,7 +491,7 @@ body::after {
   display: block;
   font-family: 'DM Sans', sans-serif; font-weight: 500;
   font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 5px;
+  color: var(--gold-deep); margin-bottom: 5px;
 }
 .story-eyebrow-en {
   display: block;
@@ -560,7 +561,7 @@ body::after {
 .story-transition-en {
   font-family: 'DM Sans', sans-serif; font-weight: 500;
   font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
-  color: var(--ink-mid); margin-top: 2px; /* darkened — gold fails AA on cream */
+  color: var(--gold-deep); margin-top: 2px; /* AA-safe gold on cream */
 }
 .story-transition-line {
   width: 1px; height: 40px; margin-top: 14px;
@@ -581,11 +582,18 @@ body::after {
   .story-eyebrow-fr,
   .story-signature,
   .story-transition-en,
+  .collection-eyebrow-fr,
+  .collection-descriptor,
+  .collection-transition-en,
   .nav-cta { font-size: 14px; }
+  /* body copy floor */
+  .collection-desc { font-size: 16px; }
   /* tighten tracking so bumped caps don't overflow narrow screens */
   .story-signature { letter-spacing: 0.14em; }
   .hero-banner-eyebrow { letter-spacing: 0.22em; }
-  .story-transition-en { letter-spacing: 0.22em; }
+  .story-transition-en,
+  .collection-descriptor,
+  .collection-transition-en { letter-spacing: 0.2em; }
 }
 
 /* ═══════════════════════════════════════
@@ -626,165 +634,118 @@ body::after {
 }
 
 /* ═══════════════════════════════════════
-   PRODUCTS
+   LA COLLECTION (editorial catalogue)
 ═══════════════════════════════════════ */
 #products {
-  background: var(--green);
-  padding: 120px 0;
-  position: relative; overflow: hidden;
+  background: var(--cream);
+  padding: 128px 0 96px;
+  position: relative;
 }
-.products-header {
-  display: flex; align-items: flex-end;
-  justify-content: space-between;
-  margin-bottom: 72px; gap: 32px;
+/* Centred intro */
+.collection-intro {
+  max-width: 720px; margin: 0 auto 84px; text-align: center;
 }
-.products-heading {
+.collection-eyebrow { display: block; margin-bottom: 22px; }
+.collection-eyebrow-fr {
+  display: block;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 11px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-deep); margin-bottom: 6px;
+}
+.collection-eyebrow-en {
+  display: block;
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 14px; letter-spacing: 0.02em; color: var(--ink-mid);
+}
+.collection-heading {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 300;
-  font-size: clamp(44px, 5vw, 68px);
-  color: var(--cream); line-height: 1.05;
+  font-size: clamp(38px, 4.4vw, 60px);
+  color: var(--ink); line-height: 1.05; margin-bottom: 8px;
 }
-.products-grid {
+.collection-heading-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(17px, 1.8vw, 22px);
+  color: var(--ink-mid); margin-bottom: 30px;
+}
+.collection-lede {
+  font-size: 16px; line-height: 1.85; color: var(--ink-mid);
+  max-width: 600px; margin: 0 auto;
+}
+.collection-lede + .collection-lede { margin-top: 16px; }
+
+/* Three-column grid — no borders, generous gap */
+.collection-grid {
   display: grid; grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
+  gap: 56px;
+  max-width: 1280px; margin: 0 auto;
 }
-
-/* Card */
-.product-card {
-  background: var(--green-mid);
+.collection-item {
   display: flex; flex-direction: column;
-  position: relative; overflow: hidden;
-  cursor: pointer;
-  transition: transform 0.4s var(--ease-out);
 }
-.product-card:hover { transform: translateY(-6px); }
-
-/* Top colour bar */
-.product-card::before {
-  content: '';
-  position: absolute; top: 0; left: 0; right: 0;
-  height: 3px; z-index: 2;
-  transition: height 0.4s ease;
+.collection-figure {
+  margin: 0 0 28px;
+  overflow: hidden;
+  background: var(--cream-dark);
 }
-.product-card:hover::before { height: 4px; }
-.card-masala::before   { background: var(--amber); }
-.card-sanspiment::before { background: #8B9E5A; }
-.card-briani::before   { background: var(--burgundy); }
-
-/* Image zone */
-.card-image {
-  width: 100%; background: var(--green);
-  display: flex; align-items: center; justify-content: center;
-  padding: 48px 40px 36px;
-  position: relative; overflow: hidden;
-  min-height: 340px;
+.collection-figure img {
+  width: 100%; aspect-ratio: 3 / 2;
+  object-fit: cover; object-position: center;
+  display: block;
 }
-.card-image::after {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 50% 80%, rgba(201,146,42,0.1) 0%, transparent 70%);
-  pointer-events: none;
-}
-.card-image img {
-  max-height: 280px; width: auto;
-  object-fit: contain;
-  position: relative; z-index: 1;
-  filter: drop-shadow(0 24px 48px rgba(0,0,0,0.3));
-  transition: transform 0.6s var(--ease-out);
-}
-.product-card:hover .card-image img { transform: scale(1.06) translateY(-6px); }
-
-/* Card body */
-.card-body {
-  padding: 32px 32px 36px;
-  flex: 1; display: flex; flex-direction: column;
-  border-top: 1px solid rgba(245,236,215,0.06);
-}
-.card-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  margin-bottom: 18px; flex-shrink: 0;
-}
-.card-masala   .card-dot { background: var(--amber); }
-.card-sanspiment .card-dot { background: #8B9E5A; }
-.card-briani   .card-dot { background: var(--burgundy); }
-
-.card-name {
+.collection-name {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic; font-weight: 300;
-  font-size: clamp(32px, 3vw, 44px);
-  color: var(--cream); line-height: 1; margin-bottom: 8px;
+  font-size: clamp(27px, 2.6vw, 34px);
+  color: var(--ink); line-height: 1.1; margin-bottom: 7px;
 }
-.card-sub {
+.collection-descriptor {
   font-family: 'DM Sans', sans-serif; font-weight: 500;
-  font-size: 10px; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 18px;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold-deep); margin-bottom: 18px;
 }
-.card-desc {
-  font-size: 14px; line-height: 1.72;
-  color: rgba(245,236,215,0.62); flex: 1; margin-bottom: 24px;
+.collection-desc {
+  font-size: 15px; line-height: 1.75; color: var(--ink-mid);
 }
-.card-badges {
-  display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 26px;
-}
-.badge {
-  font-family: 'DM Sans', sans-serif; font-weight: 500;
-  font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
-  padding: 5px 11px;
-  border: 1px solid rgba(201,146,42,0.25);
-  color: rgba(245,236,215,0.5);
-}
-.card-pricing {
-  border-top: 1px solid rgba(245,236,215,0.1);
-  padding-top: 20px;
-}
-.card-price-row {
-  display: flex; justify-content: space-between; align-items: baseline;
-  margin-bottom: 8px;
-}
-.price-size {
-  font-family: 'DM Sans', sans-serif; font-size: 12px;
-  color: rgba(245,236,215,0.45); letter-spacing: 0.08em;
-}
-.price-val {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 24px; color: var(--gold);
-}
-
-/* CTA overlay on hover */
-.card-cta-overlay {
-  position: absolute; inset: 0; z-index: 3;
-  background: rgba(15,42,30,0.7);
-  display: flex; align-items: flex-end; justify-content: center;
-  padding-bottom: 40px;
-  opacity: 0; pointer-events: none;
-  transition: opacity 0.35s ease;
-}
-.product-card:hover .card-cta-overlay { opacity: 1; pointer-events: auto; }
-.card-cta-overlay a {
-  display: inline-flex; align-items: center;
-  padding: 15px 36px; min-height: 52px;
-  background: var(--gold); color: var(--green);
-  font-family: 'DM Sans', sans-serif; font-weight: 600;
-  font-size: 12px; letter-spacing: 0.12em; text-transform: uppercase;
-  transition: background 0.3s ease;
-}
-.card-cta-overlay a:hover { background: var(--gold-light); }
-
-/* Products botanical */
-.products-botanical {
-  position: absolute; bottom: -180px; left: -160px;
-  opacity: 0.07; pointer-events: none; z-index: 0;
-  stroke: var(--cream); fill: none; stroke-width: 0.5;
+@media (prefers-reduced-motion: no-preference) {
+  .collection-figure img { transition: transform 0.7s var(--ease-out); }
+  .collection-item:hover .collection-figure img { transform: scale(1.04); }
 }
 
 @media (max-width: 1024px) {
-  .products-grid { grid-template-columns: 1fr; gap: 3px; }
-  .products-header { flex-direction: column; align-items: flex-start; }
+  .collection-grid { grid-template-columns: 1fr; gap: 64px; max-width: 520px; }
 }
 @media (max-width: 768px) {
-  #products { padding: 80px 0; }
-  .card-body { padding: 24px 24px 28px; }
-  .card-image { min-height: 260px; padding: 36px 32px 28px; }
+  #products { padding: 80px 0 64px; }
+  .collection-intro { margin-bottom: 56px; }
+  .collection-grid { gap: 56px; }
+}
+
+/* La Collection → Coffrets Cadeaux transition */
+.collection-transition {
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; padding: 64px 24px 16px;
+  background: var(--cream);
+  text-decoration: none;
+}
+.collection-transition-fr {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: clamp(26px, 3vw, 36px); color: var(--ink); line-height: 1;
+  text-align: center;
+}
+.collection-transition-en {
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold-deep); margin-top: 4px;
+}
+.collection-transition-line {
+  width: 1px; height: 40px; margin-top: 14px;
+  background: linear-gradient(180deg, var(--gold-deep), transparent);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .collection-transition-line { transition: height 0.4s var(--ease-out); }
+  .collection-transition:hover .collection-transition-line { height: 52px; }
 }
 
 /* ═══════════════════════════════════════
@@ -1181,121 +1142,73 @@ footer {
   <span class="story-transition-line" aria-hidden="true"></span>
 </a>
 
-<!-- ══════════════ PRODUCTS ══════════════ -->
-<section id="products" aria-labelledby="products-heading">
-  <svg class="products-botanical" viewBox="0 0 400 400" aria-hidden="true" focusable="false" width="700" height="700">
-    <circle cx="200" cy="200" r="175"/><circle cx="200" cy="200" r="135"/>
-    <circle cx="200" cy="200" r="95"/>
-    <path d="M25 200 Q100 110 200 135 Q300 110 375 200 Q300 290 200 265 Q100 290 25 200Z"/>
-    <path d="M200 25 Q290 100 265 200 Q290 300 200 375 Q110 300 135 200 Q110 100 200 25Z"/>
-  </svg>
+<!-- ══════════════ LA COLLECTION ══════════════ -->
+<section id="products" aria-labelledby="collection-heading">
+  <div class="wrap">
 
-  <div class="wrap" style="position:relative;z-index:1;">
-    <div class="products-header">
-      <div>
-        <span class="label reveal">The Collection</span>
-        <h2 id="products-heading" class="products-heading reveal reveal-d1">Three blends.<br>One family.</h2>
-      </div>
+    <div class="collection-intro">
+      <span class="collection-eyebrow reveal">
+        <span class="collection-eyebrow-fr" lang="fr">La Collection</span>
+        <span class="collection-eyebrow-en">The Collection</span>
+      </span>
+      <h2 id="collection-heading" class="collection-heading reveal reveal-d1" lang="fr">Trois mélanges. Une tradition.</h2>
+      <p class="collection-heading-en reveal reveal-d1">Three blends. One tradition.</p>
+      <p class="collection-lede reveal reveal-d2">
+        Each Mala blend begins with the same philosophy: carefully selected spices, roasted with patience and blended with purpose.
+      </p>
+      <p class="collection-lede reveal reveal-d3">
+        Whether bold, gentle or celebratory, every blend carries the character of a recipe refined over decades in Mauritius.
+      </p>
     </div>
 
-    <ul class="products-grid" role="list">
+    <ul class="collection-grid" role="list">
 
-      <!-- Massalé Grillé -->
-      <li class="product-card card-masala reveal">
-        <div class="card-image">
-          <img src="masala.png" alt="Massalé Grillé — Mala's roasted masala spice pouch">
-        </div>
-        <div class="card-body">
-          <div class="card-dot" aria-hidden="true"></div>
-          <h3 class="card-name"><span lang="fr">Massalé<br>Grillé</span></h3>
-          <p class="card-sub">Roasted Masala</p>
-          <p class="card-desc">Deep, smoky, complex. Slow-roasted whole spices ground by hand — coriander, cumin, fenugreek, pepper. Built for meat, fish, and anything that deserves real depth.</p>
-          <ul class="card-badges" aria-label="Product attributes">
-            <li class="badge">Gluten Free</li>
-            <li class="badge">No Additives</li>
-            <li class="badge">Medium Heat</li>
-          </ul>
-          <div class="card-pricing">
-            <div class="card-price-row">
-              <span class="price-size">100g Pouch</span>
-              <span class="price-val">£9</span>
-            </div>
-            <div class="card-price-row">
-              <span class="price-size">250g Tin</span>
-              <span class="price-val">£19</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-cta-overlay">
-          <a href="#order">Pre-order This Blend</a>
-        </div>
+      <!-- Masala Grillé -->
+      <li class="collection-item reveal reveal-d1">
+        <figure class="collection-figure">
+          <img src="masala.png" alt="Mala Masala Grillé pouch styled with cinnamon, peppercorns and a framed Mauritian botanical print">
+        </figure>
+        <h3 class="collection-name" lang="fr">Masala Grillé</h3>
+        <p class="collection-descriptor">Roasted Spice Blend</p>
+        <p class="collection-desc">
+          The original Mala blend. Rich, aromatic and deeply versatile, it is crafted to complement everything from everyday family meals to special occasions.
+        </p>
       </li>
 
-      <!-- Massalé Sans Piment -->
-      <li class="product-card card-sanspiment reveal reveal-d2">
-        <div class="card-image">
-          <img src="sanspiment.png" alt="Massalé Sans Piment — Mala's mild masala spice pouch">
-        </div>
-        <div class="card-body">
-          <div class="card-dot" aria-hidden="true"></div>
-          <h3 class="card-name"><span lang="fr">Massalé<br>Sans Piment</span></h3>
-          <p class="card-sub">Mild Masala</p>
-          <p class="card-desc">The foundational blend. Rich with coriander, cumin, turmeric, and fenugreek — balanced for everyday cooking without heat. The one that started it all.</p>
-          <ul class="card-badges" aria-label="Product attributes">
-            <li class="badge">Gluten Free</li>
-            <li class="badge">No Additives</li>
-            <li class="badge">Mild Heat</li>
-          </ul>
-          <div class="card-pricing">
-            <div class="card-price-row">
-              <span class="price-size">100g Pouch</span>
-              <span class="price-val">£9</span>
-            </div>
-            <div class="card-price-row">
-              <span class="price-size">250g Tin</span>
-              <span class="price-val">£19</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-cta-overlay">
-          <a href="#order">Pre-order This Blend</a>
-        </div>
+      <!-- Masala Sans Piment -->
+      <li class="collection-item reveal reveal-d2">
+        <figure class="collection-figure">
+          <img src="sanspiment.png" alt="Mala Masala Sans Piment pouch styled with spices on a warm Mauritian backdrop">
+        </figure>
+        <h3 class="collection-name" lang="fr">Masala Sans Piment</h3>
+        <p class="collection-descriptor">Roasted Blend Without Chilli</p>
+        <p class="collection-desc">
+          All the warmth and fragrance of our signature blend, without the heat. Balanced, approachable and full of character.
+        </p>
       </li>
 
-      <!-- Mix Briani -->
-      <li class="product-card card-briani reveal reveal-d4">
-        <div class="card-image">
-          <img src="briani.png" alt="Mix Briani — Mala's biryani spice pouch">
-        </div>
-        <div class="card-body">
-          <div class="card-dot" aria-hidden="true"></div>
-          <h3 class="card-name"><span lang="fr">Mix<br>Briani</span></h3>
-          <p class="card-sub">Biryani Blend</p>
-          <p class="card-desc">Layered, aromatic, complex. Star anise, cardamom, clove, and saffron-touched warmth. Built for long cooks and slow rice. A celebration in a tin.</p>
-          <ul class="card-badges" aria-label="Product attributes">
-            <li class="badge">Gluten Free</li>
-            <li class="badge">No Additives</li>
-            <li class="badge">Aromatic</li>
-          </ul>
-          <div class="card-pricing">
-            <div class="card-price-row">
-              <span class="price-size">100g Pouch</span>
-              <span class="price-val">£10</span>
-            </div>
-            <div class="card-price-row">
-              <span class="price-size">250g Tin</span>
-              <span class="price-val">£21</span>
-            </div>
-          </div>
-        </div>
-        <div class="card-cta-overlay">
-          <a href="#order">Pre-order This Blend</a>
-        </div>
+      <!-- Épices pour Briani Mauricien -->
+      <li class="collection-item reveal reveal-d3">
+        <figure class="collection-figure">
+          <img src="briani.png" alt="Mala Briani blend pouch styled with chillies, bay leaves and turmeric on a warm Mauritian backdrop">
+        </figure>
+        <h3 class="collection-name" lang="fr">Épices pour Briani Mauricien</h3>
+        <p class="collection-descriptor">Mauritian Style Briani Blend</p>
+        <p class="collection-desc">
+          Created for one of Mauritius' most celebrated dishes. A fragrant blend designed to bring depth, richness and celebration to the table.
+        </p>
       </li>
 
     </ul>
   </div>
 </section>
+
+<!-- Transition into Coffrets Cadeaux -->
+<a href="#gifts" class="collection-transition" aria-label="Continue to gift collections">
+  <span class="collection-transition-fr" lang="fr">Coffrets Cadeaux</span>
+  <span class="collection-transition-en">Gift Collections</span>
+  <span class="collection-transition-line" aria-hidden="true"></span>
+</a>
 
 <!-- ══════════════ GIFT SETS ══════════════ -->
 <section id="gifts" aria-labelledby="gifts-heading">
