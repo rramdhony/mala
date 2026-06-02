@@ -45,6 +45,7 @@ body {
   overflow-x: hidden;
 }
 img { max-width: 100%; display: block; }
+picture { display: contents; } /* layout-transparent so image CSS still applies */
 a { color: inherit; text-decoration: none; }
 /* Premium ragged-right (not justified): balance headings, tidy paragraph last lines.
    Progressive enhancement — ignored by browsers that don't support it. */
@@ -171,6 +172,7 @@ img.emoji {
 .hero-banner-bg {
   position: absolute; inset: 0; z-index: 0;
   background-image: url('hero-bg.png');
+  background-image: image-set(url('hero-bg.webp') type('image/webp'), url('hero-bg.png') type('image/png'));
   background-size: cover;
   background-position: right center;
   background-repeat: no-repeat;
@@ -1065,7 +1067,7 @@ footer {
 <!-- ══════════════ NAV ══════════════ -->
 <nav class="site-nav" aria-label="Main navigation">
   <a href="#hero-banner" aria-label="Mala — home">
-    <img src="logo.png" alt="Mala" class="nav-logo">
+    <picture><source srcset="logo.webp" type="image/webp"><img src="logo.png" alt="Mala" class="nav-logo" decoding="async"></picture>
   </a>
   <div class="nav-right">
     <a href="#story"    class="nav-link">Our Story</a>
@@ -1082,7 +1084,7 @@ footer {
   <!-- Desktop background layer (Ken-Burns drift) -->
   <div class="hero-banner-bg" aria-hidden="true"></div>
   <!-- Mobile-only top photo band -->
-  <img src="hero-bg.png" alt="" aria-hidden="true" class="hero-banner-photo-mobile">
+  <picture><source srcset="hero-bg.webp" type="image/webp"><img src="hero-bg.png" alt="" aria-hidden="true" class="hero-banner-photo-mobile" decoding="async"></picture>
 
   <div class="hero-banner-content">
     <div class="hero-banner-inner">
@@ -1117,7 +1119,7 @@ footer {
 <!-- ══════════════ STORY · NOTRE HISTOIRE ══════════════ -->
 <section id="story" aria-labelledby="story-heading">
   <div class="story-image-side reveal-left">
-    <img src="story-bg.png" alt="A traditional Mauritian kitchen — spices roasting by hand in a steel pan beside brass pots, mortar and pestle, and loose spices on a wooden table">
+    <picture><source srcset="story-bg.webp" type="image/webp"><img src="story-bg.png" alt="A traditional Mauritian kitchen — spices roasting by hand in a steel pan beside brass pots, mortar and pestle, and loose spices on a wooden table" loading="lazy" decoding="async"></picture>
   </div>
   <div class="story-text-side">
     <div class="story-text-inner">
@@ -1200,9 +1202,9 @@ footer {
   </div>
 
   <div class="gifts-media-side reveal-right">
-    <button type="button" class="zoomable" data-zoom-src="tins.png"
+    <button type="button" class="zoomable" data-zoom-src="tins.webp"
       aria-label="View larger image of the Mala Coffret Signature gift box">
-      <img src="tins.png" alt="Mala Coffret Signature — open gift box presenting three Mauritian spice tins">
+      <picture><source srcset="tins.webp" type="image/webp"><img src="tins.png" alt="Mala Coffret Signature — open gift box presenting three Mauritian spice tins" loading="lazy" decoding="async"></picture>
       <span class="zoom-hint" aria-hidden="true">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18">
           <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
@@ -1236,9 +1238,9 @@ footer {
       <!-- Masala Pimenté -->
       <li class="collection-item reveal reveal-d1">
         <figure class="collection-figure">
-          <button type="button" class="zoomable" data-zoom-src="masala.png"
+          <button type="button" class="zoomable" data-zoom-src="masala.webp"
             aria-label="View larger image of Masala Pimenté">
-            <img src="masala.png" alt="Mala Masala Pimenté pouch styled with cinnamon, peppercorns and a framed Mauritian botanical print">
+            <picture><source srcset="masala.webp" type="image/webp"><img src="masala.png" alt="Mala Masala Pimenté pouch styled with cinnamon, peppercorns and a framed Mauritian botanical print" loading="lazy" decoding="async"></picture>
             <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
                 <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
@@ -1258,9 +1260,9 @@ footer {
       <!-- Masala Sans Piment -->
       <li class="collection-item reveal reveal-d2">
         <figure class="collection-figure">
-          <button type="button" class="zoomable" data-zoom-src="sanspiment.png"
+          <button type="button" class="zoomable" data-zoom-src="sanspiment.webp"
             aria-label="View larger image of Masala Sans Piment">
-            <img src="sanspiment.png" alt="Mala Masala Sans Piment pouch styled with spices on a warm Mauritian backdrop">
+            <picture><source srcset="sanspiment.webp" type="image/webp"><img src="sanspiment.png" alt="Mala Masala Sans Piment pouch styled with spices on a warm Mauritian backdrop" loading="lazy" decoding="async"></picture>
             <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
                 <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
@@ -1280,9 +1282,9 @@ footer {
       <!-- Épices pour Briani Mauricien -->
       <li class="collection-item reveal reveal-d3">
         <figure class="collection-figure">
-          <button type="button" class="zoomable" data-zoom-src="briani.png"
+          <button type="button" class="zoomable" data-zoom-src="briani.webp"
             aria-label="View larger image of Épices pour Briani Mauricien">
-            <img src="briani.png" alt="Mala Briani blend pouch styled with chillies, bay leaves and turmeric on a warm Mauritian backdrop">
+            <picture><source srcset="briani.webp" type="image/webp"><img src="briani.png" alt="Mala Briani blend pouch styled with chillies, bay leaves and turmeric on a warm Mauritian backdrop" loading="lazy" decoding="async"></picture>
             <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
                 <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
@@ -1421,7 +1423,7 @@ footer {
   <div class="wrap">
     <nav class="footer-grid" aria-label="Footer navigation">
       <div>
-        <img src="logo.png" alt="Mala" class="footer-logo">
+        <picture><source srcset="logo.webp" type="image/webp"><img src="logo.png" alt="Mala" class="footer-logo" loading="lazy" decoding="async"></picture>
         <p class="footer-tagline">Made in Mauritius</p>
         <p class="footer-desc">Artisanal spice blends from a thirty-year family recipe. Small batch, handmade, dispatched with care.</p>
       </div>

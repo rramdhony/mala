@@ -1,7 +1,7 @@
-name: Deploy to Cloudflare Pages
+name: Deploy to Cloudflare
 
-# QA is run locally before pushing (npm run qa) — kept out of CI to stay fast,
-# matching the aegis workflow. This job only ships the site.
+# QA is run locally before pushing (npm run qa) to stay fast.
+# This deploys the ./public assets to the "mala-spices" Worker (see wrangler.toml).
 
 on:
   push:
@@ -10,15 +10,15 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare Pages
+    name: Deploy to Cloudflare
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy to Cloudflare Pages
-        run: npx wrangler pages deploy . --project-name mala-mauritius --branch main
+      - name: Deploy (wrangler deploy → mala-spices Worker, ./public assets)
+        run: npx wrangler deploy
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: d1ecd7ea82a6e81ddd3c7a583e4c1b89

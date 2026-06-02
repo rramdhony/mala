@@ -1,0 +1,5 @@
+name = "mala-spices"
+compatibility_date = "2025-05-28"
+
+[assets]
+directory = "./public"
