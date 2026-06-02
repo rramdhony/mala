@@ -805,21 +805,25 @@ body::after {
     radial-gradient(ellipse at 50% 45%, rgba(201,146,42,0.10) 0%, transparent 70%),
     var(--green-dark);
 }
-/* Zoomable trigger (reusable) */
+/* Zoomable trigger (reusable, generic) */
 .zoomable {
   position: relative;
-  display: block; padding: 0; border: 0; background: none;
+  display: block; width: 100%; height: 100%;
+  padding: 0; border: 0; background: none;
   cursor: zoom-in; line-height: 0;
-  max-width: 100%;
 }
-.zoomable img {
+/* Gift hero image — contained & framed (sizing scoped here, not on all .zoomable) */
+.gifts-media-side .zoomable { height: auto; max-width: 100%; }
+.gifts-media-side .zoomable img {
   width: 100%; height: auto;
   max-height: 78vh; object-fit: contain;
   display: block;
   box-shadow: 0 30px 70px rgba(0,0,0,0.4);
 }
+
+/* Zoom hint badge */
 .zoom-hint {
-  position: absolute; bottom: 16px; right: 16px;
+  position: absolute; bottom: 16px; right: 16px; z-index: 2;
   display: inline-flex; align-items: center; gap: 7px;
   padding: 9px 16px; min-height: 38px;
   background: rgba(15,42,30,0.78); color: var(--cream);
@@ -828,12 +832,16 @@ body::after {
   line-height: 1;
   backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
   border: 1px solid rgba(201,146,42,0.35);
-  pointer-events: none;
+  pointer-events: none; opacity: 0.9;
+}
+.zoom-hint--icon {
+  padding: 0; gap: 0;
+  width: 40px; height: 40px; min-height: 40px;
+  justify-content: center; bottom: 14px; right: 14px;
 }
 @media (prefers-reduced-motion: no-preference) {
   .zoomable img, .zoom-hint { transition: transform 0.5s var(--ease-out), opacity 0.3s ease; }
-  .zoomable:hover img { transform: scale(1.015); }
-  .zoom-hint { opacity: 0.85; }
+  .zoom-hint { opacity: 0.8; }
   .zoomable:hover .zoom-hint { opacity: 1; }
 }
 
@@ -1272,7 +1280,17 @@ footer {
 <!-- ══════════════ STORY · NOTRE HISTOIRE ══════════════ -->
 <section id="story" aria-labelledby="story-heading">
   <div class="story-image-side reveal-left">
-    <img src="story-bg.png" alt="A traditional Mauritian kitchen — spices roasting by hand in a steel pan beside brass pots, mortar and pestle, and loose spices on a wooden table">
+    <button type="button" class="zoomable" data-zoom-src="story-bg.png"
+      aria-label="View larger image of the traditional Mauritian kitchen">
+      <img src="story-bg.png" alt="A traditional Mauritian kitchen — spices roasting by hand in a steel pan beside brass pots, mortar and pestle, and loose spices on a wooden table">
+      <span class="zoom-hint" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="18" height="18">
+          <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
+          <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+        </svg>
+        View
+      </span>
+    </button>
   </div>
   <div class="story-text-side">
     <div class="story-text-inner">
@@ -1324,7 +1342,16 @@ footer {
       <!-- Masala Grillé -->
       <li class="collection-item reveal reveal-d1">
         <figure class="collection-figure">
-          <img src="masala.png" alt="Mala Masala Grillé pouch styled with cinnamon, peppercorns and a framed Mauritian botanical print">
+          <button type="button" class="zoomable" data-zoom-src="masala.png"
+            aria-label="View larger image of Masala Grillé">
+            <img src="masala.png" alt="Mala Masala Grillé pouch styled with cinnamon, peppercorns and a framed Mauritian botanical print">
+            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
+                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </span>
+          </button>
         </figure>
         <h3 class="collection-name" lang="fr">Masala Grillé</h3>
         <p class="collection-descriptor">Roasted Spice Blend</p>
@@ -1336,7 +1363,16 @@ footer {
       <!-- Masala Sans Piment -->
       <li class="collection-item reveal reveal-d2">
         <figure class="collection-figure">
-          <img src="sanspiment.png" alt="Mala Masala Sans Piment pouch styled with spices on a warm Mauritian backdrop">
+          <button type="button" class="zoomable" data-zoom-src="sanspiment.png"
+            aria-label="View larger image of Masala Sans Piment">
+            <img src="sanspiment.png" alt="Mala Masala Sans Piment pouch styled with spices on a warm Mauritian backdrop">
+            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
+                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </span>
+          </button>
         </figure>
         <h3 class="collection-name" lang="fr">Masala Sans Piment</h3>
         <p class="collection-descriptor">Roasted Blend Without Chilli</p>
@@ -1348,7 +1384,16 @@ footer {
       <!-- Épices pour Briani Mauricien -->
       <li class="collection-item reveal reveal-d3">
         <figure class="collection-figure">
-          <img src="briani.png" alt="Mala Briani blend pouch styled with chillies, bay leaves and turmeric on a warm Mauritian backdrop">
+          <button type="button" class="zoomable" data-zoom-src="briani.png"
+            aria-label="View larger image of Épices pour Briani Mauricien">
+            <img src="briani.png" alt="Mala Briani blend pouch styled with chillies, bay leaves and turmeric on a warm Mauritian backdrop">
+            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
+                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </span>
+          </button>
         </figure>
         <h3 class="collection-name" lang="fr">Épices pour Briani Mauricien</h3>
         <p class="collection-descriptor">Mauritian Style Briani Blend</p>
