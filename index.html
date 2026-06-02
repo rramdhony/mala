@@ -611,7 +611,7 @@ body::after {
   .story-transition-en,
   .section-title-en,
   .collection-descriptor,
-  .collection-transition-en,
+  .cp-size,
   .gift-meta,
   .gift-cta,
   .gift-transition-en,
@@ -739,6 +739,19 @@ body::after {
 }
 .collection-desc {
   font-size: 15px; line-height: 1.75; color: var(--ink-mid);
+}
+/* Discreet pouch price — editorial, not ecommerce */
+.collection-price {
+  margin-top: 16px; padding-top: 14px;
+  border-top: 1px solid rgba(26,14,4,0.1);
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 21px; color: var(--gold-deep);
+  display: flex; align-items: baseline; gap: 12px;
+}
+.cp-size {
+  font-family: 'DM Sans', sans-serif; font-weight: 500; font-style: normal;
+  font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--ink-mid);
 }
 @media (prefers-reduced-motion: no-preference) {
   .collection-figure img { transition: transform 0.7s var(--ease-out); }
@@ -1232,8 +1245,8 @@ footer {
   </a>
   <div class="nav-right">
     <a href="#story"    class="nav-link">Our Story</a>
-    <a href="#products" class="nav-link">Products</a>
     <a href="#gifts"    class="nav-link">Gift Sets</a>
+    <a href="#products" class="nav-link">Collection</a>
     <a href="#order" class="nav-cta">Pre-order</a>
   </div>
 </nav>
@@ -1308,99 +1321,6 @@ footer {
   </div>
 </section>
 
-<!-- ══════════════ LA COLLECTION ══════════════ -->
-<section id="products" aria-labelledby="collection-heading">
-  <div class="wrap">
-
-    <div class="collection-intro">
-      <h2 id="collection-heading" class="section-title reveal" lang="fr">La Collection</h2>
-      <p class="section-title-en reveal">The Collection</p>
-      <p class="section-subhead reveal reveal-d1" lang="fr">Trois mélanges. Une tradition.</p>
-      <p class="section-subhead-en reveal reveal-d1">Three blends. One tradition.</p>
-      <p class="collection-lede reveal reveal-d2">
-        Each Mala blend begins with the same philosophy: carefully selected spices, roasted with patience and blended with purpose.
-      </p>
-      <p class="collection-lede reveal reveal-d3">
-        Whether bold, gentle or celebratory, every blend carries the character of a recipe refined over decades in Mauritius.
-      </p>
-    </div>
-
-    <ul class="collection-grid" role="list">
-
-      <!-- Masala Grillé -->
-      <li class="collection-item reveal reveal-d1">
-        <figure class="collection-figure">
-          <button type="button" class="zoomable" data-zoom-src="masala.png"
-            aria-label="View larger image of Masala Grillé">
-            <img src="masala.png" alt="Mala Masala Grillé pouch styled with cinnamon, peppercorns and a framed Mauritian botanical print">
-            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
-                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
-                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
-              </svg>
-            </span>
-          </button>
-        </figure>
-        <h3 class="collection-name" lang="fr">Masala Grillé</h3>
-        <p class="collection-descriptor">Roasted Spice Blend</p>
-        <p class="collection-desc">
-          The original Mala blend. Rich, aromatic and deeply versatile, it is crafted to complement everything from everyday family meals to special occasions.
-        </p>
-      </li>
-
-      <!-- Masala Sans Piment -->
-      <li class="collection-item reveal reveal-d2">
-        <figure class="collection-figure">
-          <button type="button" class="zoomable" data-zoom-src="sanspiment.png"
-            aria-label="View larger image of Masala Sans Piment">
-            <img src="sanspiment.png" alt="Mala Masala Sans Piment pouch styled with spices on a warm Mauritian backdrop">
-            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
-                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
-                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
-              </svg>
-            </span>
-          </button>
-        </figure>
-        <h3 class="collection-name" lang="fr">Masala Sans Piment</h3>
-        <p class="collection-descriptor">Roasted Blend Without Chilli</p>
-        <p class="collection-desc">
-          All the warmth and fragrance of our signature blend, without the heat. Balanced, approachable and full of character.
-        </p>
-      </li>
-
-      <!-- Épices pour Briani Mauricien -->
-      <li class="collection-item reveal reveal-d3">
-        <figure class="collection-figure">
-          <button type="button" class="zoomable" data-zoom-src="briani.png"
-            aria-label="View larger image of Épices pour Briani Mauricien">
-            <img src="briani.png" alt="Mala Briani blend pouch styled with chillies, bay leaves and turmeric on a warm Mauritian backdrop">
-            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
-                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
-                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
-              </svg>
-            </span>
-          </button>
-        </figure>
-        <h3 class="collection-name" lang="fr">Épices pour Briani Mauricien</h3>
-        <p class="collection-descriptor">Mauritian Style Briani Blend</p>
-        <p class="collection-desc">
-          Created for one of Mauritius' most celebrated dishes. A fragrant blend designed to bring depth, richness and celebration to the table.
-        </p>
-      </li>
-
-    </ul>
-  </div>
-</section>
-
-<!-- Transition into Coffrets Cadeaux -->
-<a href="#gifts" class="collection-transition" aria-label="Continue to gift collections">
-  <span class="collection-transition-fr" lang="fr">Coffrets Cadeaux</span>
-  <span class="collection-transition-en">Gift Collections</span>
-  <span class="collection-transition-line" aria-hidden="true"></span>
-</a>
-
 <!-- ══════════════ COFFRETS CADEAUX ══════════════ -->
 <section id="gifts" aria-labelledby="gifts-heading">
   <div class="gifts-content-side">
@@ -1467,12 +1387,94 @@ footer {
   </div>
 </section>
 
-<!-- Coffrets → Pochettes Premium transition cue -->
-<div class="gift-transition" aria-hidden="true">
-  <span class="gift-transition-fr" lang="fr">Pochettes Premium</span>
-  <span class="gift-transition-en">Premium Pouches</span>
-  <span class="gift-transition-line"></span>
-</div>
+<!-- ══════════════ LA COLLECTION ══════════════ -->
+<section id="products" aria-labelledby="collection-heading">
+  <div class="wrap">
+
+    <div class="collection-intro">
+      <h2 id="collection-heading" class="section-title reveal" lang="fr">La Collection</h2>
+      <p class="section-title-en reveal">The Collection</p>
+      <p class="section-subhead reveal reveal-d1" lang="fr">Trois mélanges. Une tradition.</p>
+      <p class="section-subhead-en reveal reveal-d1">Three blends. One tradition.</p>
+      <p class="collection-lede reveal reveal-d2">
+        Each Mala blend begins with the same philosophy: carefully selected spices, roasted with patience and blended with purpose.
+      </p>
+      <p class="collection-lede reveal reveal-d3">
+        Whether bold, gentle or celebratory, every blend carries the character of a recipe refined over decades in Mauritius.
+      </p>
+    </div>
+
+    <ul class="collection-grid" role="list">
+
+      <!-- Masala Grillé -->
+      <li class="collection-item reveal reveal-d1">
+        <figure class="collection-figure">
+          <button type="button" class="zoomable" data-zoom-src="masala.png"
+            aria-label="View larger image of Masala Grillé">
+            <img src="masala.png" alt="Mala Masala Grillé pouch styled with cinnamon, peppercorns and a framed Mauritian botanical print">
+            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
+                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </span>
+          </button>
+        </figure>
+        <h3 class="collection-name" lang="fr">Masala Grillé</h3>
+        <p class="collection-descriptor">Roasted Spice Blend</p>
+        <p class="collection-desc">
+          The original Mala blend. Rich, aromatic and deeply versatile, it is crafted to complement everything from everyday family meals to special occasions.
+        </p>
+        <p class="collection-price"><span class="cp-size">250g Pouch</span>Rs —</p>
+      </li>
+
+      <!-- Masala Sans Piment -->
+      <li class="collection-item reveal reveal-d2">
+        <figure class="collection-figure">
+          <button type="button" class="zoomable" data-zoom-src="sanspiment.png"
+            aria-label="View larger image of Masala Sans Piment">
+            <img src="sanspiment.png" alt="Mala Masala Sans Piment pouch styled with spices on a warm Mauritian backdrop">
+            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
+                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </span>
+          </button>
+        </figure>
+        <h3 class="collection-name" lang="fr">Masala Sans Piment</h3>
+        <p class="collection-descriptor">Roasted Blend Without Chilli</p>
+        <p class="collection-desc">
+          All the warmth and fragrance of our signature blend, without the heat. Balanced, approachable and full of character.
+        </p>
+        <p class="collection-price"><span class="cp-size">250g Pouch</span>Rs —</p>
+      </li>
+
+      <!-- Épices pour Briani Mauricien -->
+      <li class="collection-item reveal reveal-d3">
+        <figure class="collection-figure">
+          <button type="button" class="zoomable" data-zoom-src="briani.png"
+            aria-label="View larger image of Épices pour Briani Mauricien">
+            <img src="briani.png" alt="Mala Briani blend pouch styled with chillies, bay leaves and turmeric on a warm Mauritian backdrop">
+            <span class="zoom-hint zoom-hint--icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="17" height="17">
+                <circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.5" y2="16.5"/>
+                <line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/>
+              </svg>
+            </span>
+          </button>
+        </figure>
+        <h3 class="collection-name" lang="fr">Épices pour Briani Mauricien</h3>
+        <p class="collection-descriptor">Mauritian Style Briani Blend</p>
+        <p class="collection-desc">
+          Created for one of Mauritius' most celebrated dishes. A fragrant blend designed to bring depth, richness and celebration to the table.
+        </p>
+        <p class="collection-price"><span class="cp-size">250g Pouch</span>Rs —</p>
+      </li>
+
+    </ul>
+  </div>
+</section>
 
 <!-- ══════════════ QUOTE ══════════════ -->
 <div class="quote-banner">
