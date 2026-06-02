@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Mala — Artisanal Spices from Mauritius</title>
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<meta name="theme-color" content="#1B4332">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -134,6 +136,9 @@ img.emoji {
 }
 .nav-link:hover { color: var(--cream); }
 .nav-link:hover::after { width: 100%; }
+/* Scroll-spy: current section's link */
+.nav-link.active { color: var(--cream); }
+.nav-link.active::after { width: 100%; }
 .nav-cta {
   display: inline-flex; align-items: center;
   padding: 12px 28px; min-height: 44px;
@@ -858,6 +863,7 @@ img.emoji {
   transition: background 0.3s ease, transform 0.3s ease;
 }
 .btn-submit:hover { background: var(--gold-light); transform: translateY(-2px); }
+.btn-submit:disabled { opacity: 0.65; cursor: default; transform: none; }
 .whatsapp-btn {
   display: flex; align-items: center; justify-content: center; gap: 12px;
   width: 100%; padding: 16px; min-height: 52px;
@@ -1460,6 +1466,22 @@ if ('IntersectionObserver' in window) {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => io.observe(el));
+
+  // ── Scroll-spy: highlight the nav link for the section in view ──
+  const navLinks = document.querySelectorAll('.nav-link');
+  if (navLinks.length) {
+    const spy = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const target = '#' + e.target.id;
+        navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === target));
+      });
+    }, { rootMargin: '-45% 0px -55% 0px', threshold: 0 });
+    ['story', 'gifts', 'products', 'order'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) spy.observe(el);
+    });
+  }
 }
 
 // ── Lightbox (shared, reusable) ──
@@ -1593,6 +1615,7 @@ recalc();
 // ── Form submit ──
 document.getElementById('orderForm').addEventListener('submit', function(e) {
   e.preventDefault();
+  if (this.dataset.sent === '1') return;   // guard: already submitting
   let ok = true;
   [{ el: this.fname, id: 'fname-err' }, { el: this.lname, id: 'lname-err' }, { el: this.email, id: 'email-err' }]
     .forEach(c => { if (!validateField(c.el, c.id)) ok = false; });
@@ -1607,6 +1630,11 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     if (bad) bad.focus();
     return;
   }
+
+  // valid — lock so a fast double-tap can't fire a second WhatsApp message
+  this.dataset.sent = '1';
+  const submitBtn = this.querySelector('.btn-submit');
+  if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'Sending…'; }
 
   const d = {
     fname: this.fname.value.trim(), lname: this.lname.value.trim(),
