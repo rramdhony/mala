@@ -88,6 +88,15 @@ body::after {
 .wrap { max-width: 1360px; margin: 0 auto; padding: 0 60px; }
 @media (max-width: 768px) { .wrap { padding: 0 24px; } }
 
+/* Twemoji sizing (cross-platform emoji rendering) */
+img.emoji {
+  height: 1em; width: 1em;
+  margin: 0 0.05em 0 0.1em;
+  vertical-align: -0.1em;
+  display: inline;
+}
+.order-heading img.emoji { height: 0.6em; width: 0.6em; vertical-align: baseline; }
+
 /* ═══════════════════════════════════════
    NAV
 ═══════════════════════════════════════ */
@@ -1093,8 +1102,8 @@ body::after {
   color: var(--gold); margin-bottom: 9px;
 }
 .order-line {
-  display: grid; gap: 10px; align-items: center;
-  grid-template-columns: 1fr 84px 110px 44px;
+  display: grid; gap: 8px; align-items: center;
+  grid-template-columns: minmax(0,1fr) 68px 96px 44px;
   grid-template-areas: "product qty sub remove";
   margin-bottom: 10px;
 }
@@ -1425,7 +1434,8 @@ footer {
       <p class="gift-desc">
         Designed for weddings, corporate events and special occasions. Custom sleeves, event branding and personalised messages available on request.
       </p>
-      <a href="#order" class="gift-cta gift-cta-ghost">Request Custom Pricing</a>
+      <a href="https://wa.me/23057123456?text=Hi%20Mala%2C%20I%27d%20like%20to%20enquire%20about%20a%20Coffret%20Personnalis%C3%A9%20%28custom%20gift%20collection%29.%20Please%20could%20you%20contact%20me%3F%0AMy%20phone%3A%20%0AMy%20email%3A%20"
+        class="gift-cta gift-cta-ghost" target="_blank" rel="noopener noreferrer">Request Custom Pricing</a>
     </div>
 
     <div class="gifts-support reveal reveal-d5" aria-label="Prepared and packed in Mauritius. Designed to be shared. Crafted to be remembered.">
@@ -1559,7 +1569,7 @@ footer {
 <section id="order" aria-labelledby="order-heading">
   <div class="wrap">
     <span class="label reveal">Pre-order</span>
-    <h2 id="order-heading" class="order-heading reveal reveal-d1">Reserve yours<br>before we open.</h2>
+    <h2 id="order-heading" class="order-heading reveal reveal-d1">Reserve yours<br>before we run out <span class="oh-emoji">😉</span></h2>
     <p class="order-sub reveal reveal-d2">Leave your details and we will confirm your order personally — no automated emails, no chatbots.</p>
 
     <div class="order-form reveal reveal-d3" id="orderFormWrap">
@@ -1667,9 +1677,19 @@ footer {
   </div>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>
 // ── Config ──
 const WHATSAPP_NUMBER = '23057123456'; // UPDATE THIS
+
+// ── Twemoji: render emoji consistently across platforms ──
+if (typeof twemoji !== 'undefined') {
+  twemoji.parse(document.body, {
+    base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@v14.0.2/assets/',
+    folder: 'svg',
+    ext: '.svg'
+  });
+}
 
 // ── Nav scroll class ──
 const siteNav = document.querySelector('.site-nav');
@@ -1765,13 +1785,13 @@ function validateField(input, errId) {
 
 // ── Multi-line order builder ──
 const PRODUCTS = [
-  { label: 'Masala Grillé — 250g Pouch',              price: 250 },
-  { label: 'Masala Sans Piment — 250g Pouch',         price: 250 },
-  { label: 'Épices pour Briani Mauricien — 250g Pouch', price: 250 },
-  { label: 'Le Trio — Three Pouches',                 price: 695 },
-  { label: 'Coffret Signature — 3×40g Tins',          price: 750 },
-  { label: 'Coffret Personnalisé — Custom',           price: null }, // quoted separately
+  { label: 'Masala Grillé — 250g',      price: 250 },
+  { label: 'Masala Sans Piment — 250g', price: 250 },
+  { label: 'Briani Mauricien — 250g',   price: 250 },
+  { label: 'Le Trio — 3 Pouches',       price: 695 },
+  { label: 'Coffret Signature — 3×40g', price: 750 },
 ];
+const QTY_MAX = 300;
 const linesEl  = document.getElementById('orderLines');
 const totalEl  = document.getElementById('orderTotal');
 const addBtn   = document.getElementById('addLine');
@@ -1789,11 +1809,15 @@ function createLine() {
   line.className = 'order-line';
   line.innerHTML =
     '<select class="ol-product" aria-label="Product">' + optionsHTML() + '</select>' +
-    '<input class="ol-qty" type="number" inputmode="numeric" aria-label="Quantity" value="1" min="1" max="99" step="1">' +
+    '<input class="ol-qty" type="number" inputmode="numeric" aria-label="Quantity" value="1" min="1" max="' + QTY_MAX + '" step="1">' +
     '<span class="ol-sub" aria-hidden="true">—</span>' +
     '<button type="button" class="ol-remove" aria-label="Remove this product">&times;</button>';
   line.querySelector('.ol-product').addEventListener('change', recalc);
-  line.querySelector('.ol-qty').addEventListener('input', recalc);
+  const qtyEl = line.querySelector('.ol-qty');
+  qtyEl.addEventListener('input', function () {
+    if (parseInt(this.value, 10) > QTY_MAX) this.value = String(QTY_MAX);
+    recalc();
+  });
   line.querySelector('.ol-remove').addEventListener('click', () => {
     line.remove();
     if (!linesEl.querySelector('.order-line')) linesEl.appendChild(createLine());
@@ -1803,7 +1827,7 @@ function createLine() {
 }
 function readLine(line) {
   const idx = line.querySelector('.ol-product').value;
-  const qty = Math.max(1, parseInt(line.querySelector('.ol-qty').value, 10) || 1);
+  const qty = Math.max(1, Math.min(QTY_MAX, parseInt(line.querySelector('.ol-qty').value, 10) || 1));
   if (idx === '') return null;
   return { product: PRODUCTS[idx], qty: qty };
 }
