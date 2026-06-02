@@ -979,28 +979,30 @@ footer {
 /* ═══════════════════════════════════════
    SCROLL ANIMATIONS
 ═══════════════════════════════════════ */
+/* Fail-safe: content is visible by default. It only hides to animate
+   once JS has added body.js-ready — so if JS fails, nothing stays hidden. */
 @media (prefers-reduced-motion: no-preference) {
-  .reveal {
+  body.js-ready .reveal {
     opacity: 0; transform: translateY(28px);
     transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out);
   }
-  .reveal.in { opacity: 1; transform: none; }
+  body.js-ready .reveal.in { opacity: 1; transform: none; }
   .reveal-d1 { transition-delay: 0.1s; }
   .reveal-d2 { transition-delay: 0.2s; }
   .reveal-d3 { transition-delay: 0.3s; }
   .reveal-d4 { transition-delay: 0.4s; }
   .reveal-d5 { transition-delay: 0.5s; }
 
-  .reveal-left {
+  body.js-ready .reveal-left {
     opacity: 0; transform: translateX(-40px);
     transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
   }
-  .reveal-left.in { opacity: 1; transform: none; }
-  .reveal-right {
+  body.js-ready .reveal-left.in { opacity: 1; transform: none; }
+  body.js-ready .reveal-right {
     opacity: 0; transform: translateX(40px);
     transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
   }
-  .reveal-right.in { opacity: 1; transform: none; }
+  body.js-ready .reveal-right.in { opacity: 1; transform: none; }
 }
 
 /* ═══════════════════════════════════════
@@ -1450,7 +1452,10 @@ window.addEventListener('scroll', () => {
 }, { passive: true });
 
 // ── Intersection Observer: scroll reveals ──
+// Only arm the hide-then-reveal once we know we can reveal — so content
+// is never left hidden if the observer is unavailable.
 if ('IntersectionObserver' in window) {
+  document.body.classList.add('js-ready');
   const io = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); } });
   }, { threshold: 0.12 });
