@@ -617,6 +617,9 @@ body::after {
   .gift-transition-en,
   .gifts-support,
   .zoom-hint,
+  .form-group label,
+  .ol-label,
+  .add-line-btn,
   .nav-cta { font-size: 14px; }
   /* body copy floor */
   .collection-desc { font-size: 16px; }
@@ -1081,7 +1084,57 @@ body::after {
 }
 .order-form { text-align: left; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-.form-row-pq { display: grid; grid-template-columns: 2.4fr 1fr; gap: 16px; }
+
+/* Multi-line order builder */
+.ol-label {
+  display: block;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 9px;
+}
+.order-line {
+  display: grid; gap: 10px; align-items: center;
+  grid-template-columns: 1fr 84px 110px 44px;
+  grid-template-areas: "product qty sub remove";
+  margin-bottom: 10px;
+}
+.ol-product { grid-area: product; }
+.ol-qty { grid-area: qty; }
+.ol-sub {
+  grid-area: sub; text-align: right;
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 18px; color: var(--gold);
+}
+.ol-remove {
+  grid-area: remove; width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  background: transparent; border: 1px solid rgba(245,236,215,0.2);
+  color: rgba(245,236,215,0.7); font-size: 22px; line-height: 1; cursor: pointer;
+}
+.ol-remove:hover { border-color: #f87171; color: #f87171; }
+.add-line-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  min-height: 44px; padding: 10px 18px; margin-top: 4px;
+  background: transparent; color: var(--cream);
+  border: 1px solid rgba(201,146,42,0.4);
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 13px; letter-spacing: 0.08em; cursor: pointer;
+}
+.add-line-btn:hover { border-color: var(--gold); color: var(--gold); }
+.order-foot { display: flex; justify-content: flex-end; margin-top: 18px; }
+.order-total {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: 22px; color: var(--cream);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .ol-remove, .add-line-btn { transition: border-color 0.3s ease, color 0.3s ease; }
+}
+@media (max-width: 768px) {
+  .order-line {
+    grid-template-columns: 1fr 110px 44px;
+    grid-template-areas: "product product product" "qty sub remove";
+  }
+}
 .form-group { margin-bottom: 16px; }
 .form-group label {
   display: block;
@@ -1536,32 +1589,22 @@ footer {
           <label for="phone">WhatsApp / Phone (optional)</label>
           <input type="tel" id="phone" name="phone" placeholder="+44 7700 000000" autocomplete="tel">
         </div>
-        <div class="form-row-pq">
-          <div class="form-group">
-            <label for="product">Product Selection *</label>
-            <select id="product" name="product" required aria-required="true" aria-describedby="product-err">
-              <option value="" disabled selected>Choose your order</option>
-              <option value="Masala Grillé — 250g Pouch — Rs 250">Masala Grillé — 250g Pouch — Rs 250</option>
-              <option value="Masala Sans Piment — 250g Pouch — Rs 250">Masala Sans Piment — 250g Pouch — Rs 250</option>
-              <option value="Épices pour Briani Mauricien — 250g Pouch — Rs 250">Épices pour Briani Mauricien — 250g Pouch — Rs 250</option>
-              <option value="Le Trio — Three Pouches — Rs 695">Le Trio — Three Pouches — Rs 695</option>
-              <option value="Coffret Signature — 3×40g Tins — Rs 750">Coffret Signature — 3×40g Tins — Rs 750</option>
-              <option value="Coffret Personnalisé — Custom — From Rs 950">Coffret Personnalisé — Custom — From Rs 950</option>
-            </select>
-            <span class="field-error" id="product-err" role="alert">Please select a product.</span>
+        <div class="form-group">
+          <span class="ol-label" id="order-lines-label">Your Order *</span>
+          <div id="orderLines" role="group" aria-labelledby="order-lines-label"></div>
+          <button type="button" id="addLine" class="add-line-btn">
+            <span aria-hidden="true">+</span> Add another product
+          </button>
+          <div class="order-foot">
+            <span class="order-total" id="orderTotal" aria-live="polite"></span>
           </div>
-          <div class="form-group">
-            <label for="qty">Quantity *</label>
-            <input type="number" id="qty" name="qty" value="1" min="1" max="99" step="1"
-              inputmode="numeric" required aria-required="true" aria-describedby="qty-err">
-            <span class="field-error" id="qty-err" role="alert">Enter a quantity of 1 or more.</span>
-          </div>
+          <span class="field-error" id="order-err" role="alert">Please choose at least one product.</span>
         </div>
         <div class="form-group">
           <label for="message">Personalisation Note (optional)</label>
           <textarea id="message" name="message" placeholder="A name, a message, or a memory for the handwritten card…"></textarea>
         </div>
-        <button type="submit" class="btn-submit">Reserve My Order</button>
+        <button type="submit" class="btn-submit">Place My Order</button>
       </form>
       <a href="#" id="whatsappBtn" class="whatsapp-btn" target="_blank" rel="noopener noreferrer">
         <svg class="wa-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
@@ -1705,7 +1748,7 @@ document.querySelectorAll('.stat-number[data-target]').forEach(el => counterObse
 
 // ── WhatsApp default link ──
 document.getElementById('whatsappBtn').href =
-  'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hello, I would like to pre-order from Mala.');
+  'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent('Hello, I would like to place an order with Mala.');
 
 // ── Form validation helpers ──
 function validateField(input, errId) {
@@ -1715,45 +1758,116 @@ function validateField(input, errId) {
   if (err) err.classList.toggle('show', bad);
   return !bad;
 }
-function validateQty(input, errId) {
-  const err = document.getElementById(errId);
-  const n = parseInt(input.value, 10);
-  const bad = !input.value.trim() || isNaN(n) || n < 1;
-  input.setAttribute('aria-invalid', bad ? 'true' : 'false');
-  if (err) err.classList.toggle('show', bad);
-  return !bad;
-}
-['fname','lname','email','product'].forEach(name => {
+['fname','lname','email'].forEach(name => {
   const el = document.getElementById(name);
   if (el) el.addEventListener('blur', () => validateField(el, name + '-err'));
 });
-document.getElementById('qty').addEventListener('blur', function () { validateQty(this, 'qty-err'); });
+
+// ── Multi-line order builder ──
+const PRODUCTS = [
+  { label: 'Masala Grillé — 250g Pouch',              price: 250 },
+  { label: 'Masala Sans Piment — 250g Pouch',         price: 250 },
+  { label: 'Épices pour Briani Mauricien — 250g Pouch', price: 250 },
+  { label: 'Le Trio — Three Pouches',                 price: 695 },
+  { label: 'Coffret Signature — 3×40g Tins',          price: 750 },
+  { label: 'Coffret Personnalisé — Custom',           price: null }, // quoted separately
+];
+const linesEl  = document.getElementById('orderLines');
+const totalEl  = document.getElementById('orderTotal');
+const addBtn   = document.getElementById('addLine');
+const orderErr = document.getElementById('order-err');
+
+function fmtRs(n) { return 'Rs ' + n.toLocaleString('en-US'); }
+function optionsHTML() {
+  return '<option value="" disabled selected>Choose a product</option>' +
+    PRODUCTS.map((p, i) =>
+      '<option value="' + i + '">' + p.label + (p.price != null ? ' — ' + fmtRs(p.price) : ' — Custom') + '</option>'
+    ).join('');
+}
+function createLine() {
+  const line = document.createElement('div');
+  line.className = 'order-line';
+  line.innerHTML =
+    '<select class="ol-product" aria-label="Product">' + optionsHTML() + '</select>' +
+    '<input class="ol-qty" type="number" inputmode="numeric" aria-label="Quantity" value="1" min="1" max="99" step="1">' +
+    '<span class="ol-sub" aria-hidden="true">—</span>' +
+    '<button type="button" class="ol-remove" aria-label="Remove this product">&times;</button>';
+  line.querySelector('.ol-product').addEventListener('change', recalc);
+  line.querySelector('.ol-qty').addEventListener('input', recalc);
+  line.querySelector('.ol-remove').addEventListener('click', () => {
+    line.remove();
+    if (!linesEl.querySelector('.order-line')) linesEl.appendChild(createLine());
+    recalc();
+  });
+  return line;
+}
+function readLine(line) {
+  const idx = line.querySelector('.ol-product').value;
+  const qty = Math.max(1, parseInt(line.querySelector('.ol-qty').value, 10) || 1);
+  if (idx === '') return null;
+  return { product: PRODUCTS[idx], qty: qty };
+}
+function recalc() {
+  let total = 0, hasCustom = false;
+  linesEl.querySelectorAll('.order-line').forEach(line => {
+    const sub = line.querySelector('.ol-sub');
+    const item = readLine(line);
+    if (!item) { sub.textContent = '—'; return; }
+    if (item.product.price == null) { sub.textContent = 'Custom'; hasCustom = true; }
+    else { const s = item.product.price * item.qty; sub.textContent = fmtRs(s); total += s; }
+  });
+  totalEl.textContent = 'Order total: ' + fmtRs(total) + (hasCustom ? ' + custom (quoted)' : '');
+  const lines = linesEl.querySelectorAll('.order-line');
+  lines.forEach(l => { l.querySelector('.ol-remove').style.visibility = lines.length > 1 ? 'visible' : 'hidden'; });
+}
+function getOrder() {
+  const items = []; let total = 0, hasCustom = false;
+  linesEl.querySelectorAll('.order-line').forEach(line => {
+    const item = readLine(line);
+    if (!item) return;
+    if (item.product.price == null) { items.push('- ' + item.qty + '× ' + item.product.label + ' (quoted separately)'); hasCustom = true; }
+    else { const s = item.product.price * item.qty; items.push('- ' + item.qty + '× ' + item.product.label + ' — ' + fmtRs(s)); total += s; }
+  });
+  return { items: items, total: total, hasCustom: hasCustom };
+}
+addBtn.addEventListener('click', () => { linesEl.appendChild(createLine()); recalc(); });
+linesEl.appendChild(createLine());
+recalc();
 
 // ── Form submit ──
 document.getElementById('orderForm').addEventListener('submit', function(e) {
   e.preventDefault();
-  const checks = [
-    { el: this.fname,   id: 'fname-err'   },
-    { el: this.lname,   id: 'lname-err'   },
-    { el: this.email,   id: 'email-err'   },
-    { el: this.product, id: 'product-err' },
-  ];
   let ok = true;
-  checks.forEach(c => { if (!validateField(c.el, c.id)) ok = false; });
-  if (!validateQty(this.qty, 'qty-err')) ok = false;
-  if (!ok) { const bad = this.querySelector('[aria-invalid="true"]'); if (bad) bad.focus(); return; }
+  [{ el: this.fname, id: 'fname-err' }, { el: this.lname, id: 'lname-err' }, { el: this.email, id: 'email-err' }]
+    .forEach(c => { if (!validateField(c.el, c.id)) ok = false; });
+
+  const order = getOrder();
+  if (order.items.length === 0) { orderErr.classList.add('show'); ok = false; }
+  else orderErr.classList.remove('show');
+
+  if (!ok) {
+    const bad = this.querySelector('[aria-invalid="true"]') ||
+                (order.items.length === 0 ? linesEl.querySelector('.ol-product') : null);
+    if (bad) bad.focus();
+    return;
+  }
 
   const d = {
     fname: this.fname.value.trim(), lname: this.lname.value.trim(),
     email: this.email.value.trim(), phone: this.phone.value.trim(),
-    product: this.product.value,   qty: this.qty.value.trim(),
     message: this.message.value.trim(),
   };
-  const msg = ['Hello, I would like to pre-order from Mala:','',
-    'Name: ' + d.fname + ' ' + d.lname, 'Product: ' + d.product, 'Quantity: ' + d.qty,
-    'Email: ' + d.email,
-    d.phone ? 'Phone: ' + d.phone : '', d.message ? 'Note: ' + d.message : ''
-  ].filter(Boolean).join('\n');
+  const msg = ['Hello, I would like to place an order with Mala:', '', 'Order:']
+    .concat(order.items)
+    .concat([
+      'Order total: ' + fmtRs(order.total) + (order.hasCustom ? ' (+ custom items quoted separately)' : ''),
+      '',
+      'Name: ' + d.fname + ' ' + d.lname,
+      'Email: ' + d.email,
+      d.phone ? 'Phone: ' + d.phone : '',
+      d.message ? 'Note: ' + d.message : ''
+    ])
+    .filter(Boolean).join('\n');
 
   const wrap = document.getElementById('orderFormWrap');
   const succ = document.getElementById('formSuccess');
