@@ -1,0 +1,7 @@
+node_modules/
+playwright-report/
+qa-screenshots/
+test-results/
+package-lock.json
+npm-debug.log*
+.DS_Store

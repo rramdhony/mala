@@ -1,0 +1,11 @@
+{
+  "extends": ["html-validate:recommended"],
+  "rules": {
+    "heading-level": "error",
+    "aria-label-misuse": "error",
+    "no-redundant-role": "warn",
+    "require-sri": "off",
+    "long-title": "off",
+    "no-trailing-whitespace": "off"
+  }
+}
