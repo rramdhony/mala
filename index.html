@@ -614,6 +614,10 @@ body::after {
   .section-title-en,
   .collection-descriptor,
   .collection-transition-en,
+  .gift-meta,
+  .gift-cta,
+  .gift-transition-en,
+  .gifts-support,
   .nav-cta { font-size: 14px; }
   /* body copy floor */
   .collection-desc { font-size: 16px; }
@@ -778,71 +782,137 @@ body::after {
 }
 
 /* ═══════════════════════════════════════
-   GIFT SETS
+   COFFRETS CADEAUX (Gift Collections) — dark, premium
 ═══════════════════════════════════════ */
 #gifts {
-  background: var(--cream-dark);
-  display: grid; grid-template-columns: 1fr 1fr;
-  min-height: 80vh;
+  background: var(--green-dark);
+  display: grid; grid-template-columns: 1.05fr 0.95fr;
+  align-items: stretch;
 }
-.gifts-image-side {
-  position: relative; overflow: hidden;
-}
-.gifts-image-side img {
+/* Section header on dark — recolour the shared lockup */
+#gifts .section-title { color: var(--cream); }
+#gifts .section-title-en { color: var(--gold); }      /* 5.5:1 on green-dark — AA */
+#gifts .section-subhead { color: var(--cream); }
+#gifts .section-subhead-en { color: rgba(245,236,215,0.7); }
+
+/* Media side */
+.gifts-media-side { position: relative; overflow: hidden; min-height: 100%; }
+.gifts-media-side img {
   width: 100%; height: 100%;
   object-fit: cover; object-position: center;
   display: block;
-  transition: transform 1.2s var(--ease-out);
 }
-.gifts-image-side:hover img { transform: scale(1.03); }
+@media (prefers-reduced-motion: no-preference) {
+  .gifts-media-side img { transition: transform 1.4s var(--ease-out); }
+  .gifts-media-side:hover img { transform: scale(1.03); }
+}
 
+/* Content side */
 .gifts-content-side {
-  padding: 100px 80px;
+  padding: 110px 80px;
   display: flex; flex-direction: column; justify-content: center;
 }
-.gifts-heading {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-weight: 300;
-  font-size: clamp(40px, 4.5vw, 58px);
-  color: var(--ink); line-height: 1.05;
-  margin: 20px 0 28px;
-}
 .gifts-intro {
-  font-size: 16px; line-height: 1.8; color: var(--ink-mid); margin-bottom: 48px;
+  font-size: 16px; line-height: 1.85; color: rgba(245,236,215,0.72);
+  max-width: 480px; margin-bottom: 18px;
 }
-.gift-row {
-  border-top: 1px solid rgba(26,14,4,0.1);
-  padding: 26px 0;
-  display: flex; justify-content: space-between; align-items: start; gap: 24px;
+.gifts-intro:last-of-type { margin-bottom: 52px; }
+
+/* Gift product listing — editorial, not ecommerce */
+.gift-item {
+  border-top: 1px solid rgba(201,146,42,0.22);
+  padding: 32px 0;
 }
-.gift-row:last-of-type { border-bottom: 1px solid rgba(26,14,4,0.1); }
+.gift-item:last-of-type { border-bottom: 1px solid rgba(201,146,42,0.22); }
+.gift-item-head {
+  display: flex; align-items: baseline; justify-content: space-between;
+  gap: 20px; flex-wrap: wrap; margin-bottom: 6px;
+}
 .gift-name {
   font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 22px;
-  color: var(--ink); margin-bottom: 5px;
+  font-style: italic; font-weight: 300;
+  font-size: clamp(26px, 2.6vw, 34px);
+  color: var(--cream); line-height: 1.1;
 }
-.gift-desc { font-size: 13px; line-height: 1.6; color: var(--ink-mid); }
 .gift-price {
   font-family: 'Cormorant Garamond', serif;
-  font-style: italic; font-size: 26px;
-  color: var(--gold); white-space: nowrap; flex-shrink: 0;
+  font-style: italic; font-size: clamp(22px, 2vw, 28px);
+  color: var(--gold); white-space: nowrap;
 }
-.gifts-personal {
-  margin-top: 44px; background: var(--green); padding: 28px 32px;
+.gift-meta {
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
 }
-.gifts-personal .label { display: block; margin-bottom: 10px; }
-.gifts-personal p {
-  font-size: 14px; line-height: 1.7;
-  color: rgba(245,236,215,0.78);
+.gift-contents {
+  font-size: 14px; line-height: 1.6; color: rgba(245,236,215,0.6);
+  margin-bottom: 16px;
 }
+.gift-desc {
+  font-size: 15px; line-height: 1.75; color: rgba(245,236,215,0.78);
+  max-width: 460px; margin-bottom: 22px;
+}
+.gift-cta {
+  display: inline-flex; align-items: center;
+  min-height: 48px; padding: 13px 30px;
+  font-family: 'DM Sans', sans-serif; font-weight: 600;
+  font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+}
+.gift-cta-primary {
+  background: var(--gold); color: var(--green-dark);
+}
+.gift-cta-ghost {
+  background: transparent; color: var(--cream);
+  border: 1px solid rgba(245,236,215,0.3);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .gift-cta { transition: background 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease; }
+  .gift-cta-primary:hover { background: var(--gold-light); transform: translateY(-2px); }
+  .gift-cta-ghost:hover { border-color: var(--gold); color: var(--gold); transform: translateY(-2px); }
+}
+
+/* Supporting message */
+.gifts-support {
+  display: flex; align-items: center; flex-wrap: wrap; gap: 14px;
+  margin-top: 48px;
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 11px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(245,236,215,0.7);
+}
+.gifts-support .sig-divider { width: 18px; height: 1px; background: var(--gold); }
 
 @media (max-width: 1024px) {
   #gifts { grid-template-columns: 1fr; }
-  .gifts-image-side { height: 60vw; min-height: 320px; }
-  .gifts-content-side { padding: 72px 40px; }
+  .gifts-media-side { order: -1; height: 58vw; min-height: 320px; }
+  .gifts-content-side { padding: 80px 40px; }
 }
 @media (max-width: 768px) {
+  /* keep single-column grid so media order:-1 stays above content */
+  .gifts-media-side { height: 64vw; min-height: 280px; }
   .gifts-content-side { padding: 64px 24px; }
+  .gift-name { font-size: 26px; }
+  .gift-item-head { gap: 8px; }
+}
+
+/* Coffrets → Pochettes transition (dark) */
+.gift-transition {
+  background: var(--green-dark);
+  display: flex; flex-direction: column; align-items: center;
+  gap: 8px; padding: 8px 24px 72px;
+  text-align: center;
+}
+.gift-transition-fr {
+  font-family: 'Cormorant Garamond', serif; font-style: italic;
+  font-size: clamp(26px, 3vw, 36px); color: var(--cream); line-height: 1;
+}
+.gift-transition-en {
+  font-family: 'DM Sans', sans-serif; font-weight: 500;
+  font-size: 12px; letter-spacing: 0.3em; text-transform: uppercase;
+  color: var(--gold); margin-top: 4px;
+}
+.gift-transition-line {
+  width: 1px; height: 40px; margin-top: 14px;
+  background: linear-gradient(180deg, var(--gold), transparent);
 }
 
 /* ═══════════════════════════════════════
@@ -1226,44 +1296,69 @@ footer {
   <span class="collection-transition-line" aria-hidden="true"></span>
 </a>
 
-<!-- ══════════════ GIFT SETS ══════════════ -->
+<!-- ══════════════ COFFRETS CADEAUX ══════════════ -->
 <section id="gifts" aria-labelledby="gifts-heading">
-  <div class="gifts-image-side reveal-left">
-    <img src="set.png" alt="Mala luxury gift set in presentation box">
-  </div>
   <div class="gifts-content-side">
-    <span class="label reveal">Gift Collections</span>
-    <h2 id="gifts-heading" class="gifts-heading reveal reveal-d1">The finest gift<br>from the island.</h2>
-    <p class="gifts-intro reveal reveal-d2">Each set is assembled by hand, wrapped in tissue, and finished with a handwritten card from the family.</p>
+    <h2 id="gifts-heading" class="section-title reveal" lang="fr">Coffrets Cadeaux</h2>
+    <p class="section-title-en reveal">Gift Collections</p>
+    <p class="section-subhead reveal reveal-d1" lang="fr">Offrez les saveurs de Maurice.</p>
+    <p class="section-subhead-en reveal reveal-d1">Share the flavours of Mauritius.</p>
 
-    <div class="gift-row reveal reveal-d2">
-      <div>
-        <p class="gift-name">The Essential Pair</p>
-        <p class="gift-desc"><span lang="fr">Massalé Sans Piment</span> + <span lang="fr">Mix Briani</span>. Two pouches in a kraft sleeve with recipe card.</p>
+    <p class="gifts-intro reveal reveal-d2">
+      Thoughtfully assembled and inspired by generations of Mauritian cooking, each Mala gift collection brings together our signature blends in a presentation worthy of the occasion.
+    </p>
+    <p class="gifts-intro reveal reveal-d2">
+      Whether offered as a corporate gift, a wedding favour or a keepsake from Mauritius, every collection is designed to be both beautiful and useful.
+    </p>
+
+    <!-- Hero gift product -->
+    <div class="gift-item reveal reveal-d3">
+      <div class="gift-item-head">
+        <h3 class="gift-name" lang="fr">Coffret Signature</h3>
+        <span class="gift-price">Rs 750</span>
       </div>
-      <span class="gift-price">£22</span>
-    </div>
-    <div class="gift-row reveal reveal-d3">
-      <div>
-        <p class="gift-name">The Tin Collection</p>
-        <p class="gift-desc">Both 250g tins in a lidded gift box with ribbon and family note.</p>
-      </div>
-      <span class="gift-price">£44</span>
-    </div>
-    <div class="gift-row reveal reveal-d4">
-      <div>
-        <p class="gift-name">The Maison Set</p>
-        <p class="gift-desc">All three products, luxury box, ribbon, and personalised card.</p>
-      </div>
-      <span class="gift-price">£58</span>
+      <p class="gift-meta">3 × 40g Premium Tins</p>
+      <p class="gift-contents"><span lang="fr">Masala Grillé</span> · <span lang="fr">Masala Sans Piment</span> · <span lang="fr">Mix Briani</span></p>
+      <p class="gift-desc">
+        Our signature gift collection. Three of our most loved blends presented in an elegant keepsake box inspired by Mauritian hospitality and tradition.
+      </p>
+      <a href="#order" class="gift-cta gift-cta-primary">Enquire Now</a>
     </div>
 
-    <div class="gifts-personal reveal reveal-d5">
-      <span class="label">Personalisation</span>
-      <p>Every order includes a handwritten card. Add a name, a message, or a memory at checkout. We write it ourselves — in ink, not print.</p>
+    <!-- Custom / corporate -->
+    <div class="gift-item reveal reveal-d4">
+      <div class="gift-item-head">
+        <h3 class="gift-name" lang="fr">Coffret Personnalisé</h3>
+        <span class="gift-price">From Rs 950</span>
+      </div>
+      <p class="gift-meta">Custom Event &amp; Corporate Edition</p>
+      <p class="gift-desc">
+        Designed for weddings, corporate events and special occasions. Custom sleeves, event branding and personalised messages available on request.
+      </p>
+      <a href="#order" class="gift-cta gift-cta-ghost">Request Custom Pricing</a>
     </div>
+
+    <div class="gifts-support reveal reveal-d5" aria-label="Prepared and packed in Mauritius. Designed to be shared. Crafted to be remembered.">
+      <span>Prepared &amp; Packed in Mauritius</span>
+      <span class="sig-divider" aria-hidden="true"></span>
+      <span>Designed to be Shared</span>
+      <span class="sig-divider" aria-hidden="true"></span>
+      <span>Crafted to be Remembered</span>
+    </div>
+  </div>
+
+  <div class="gifts-media-side reveal-right">
+    <!-- TEMP: set.png placeholder — swap to gift-bg.png (3×40g tin render) when supplied -->
+    <img src="set.png" alt="Mala Coffret Signature — premium gift box with three Mauritian spice blends">
   </div>
 </section>
+
+<!-- Coffrets → Pochettes Premium transition cue -->
+<div class="gift-transition" aria-hidden="true">
+  <span class="gift-transition-fr" lang="fr">Pochettes Premium</span>
+  <span class="gift-transition-en">Premium Pouches</span>
+  <span class="gift-transition-line"></span>
+</div>
 
 <!-- ══════════════ QUOTE ══════════════ -->
 <div class="quote-banner">
