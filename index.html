@@ -33,6 +33,8 @@
 ═══════════════════════════════════════ */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+/* Offset anchor jumps so section tops aren't hidden under the fixed nav */
+#hero-banner, #story, #gifts, #products, #order { scroll-margin-top: 84px; }
 body {
   font-family: 'DM Sans', sans-serif;
   font-weight: 300;
@@ -123,9 +125,15 @@ img.emoji {
 .nav-link {
   font-family: 'DM Sans', sans-serif; font-weight: 500; font-size: 12px;
   letter-spacing: 0.12em; text-transform: uppercase; color: rgba(245,236,215,0.7);
-  transition: color 0.3s ease; display: none;
+  transition: color 0.3s ease; display: none; position: relative;
+}
+.nav-link::after {
+  content: ''; position: absolute; left: 0; bottom: -6px;
+  width: 0; height: 1px; background: var(--gold);
+  transition: width 0.3s ease;
 }
 .nav-link:hover { color: var(--cream); }
+.nav-link:hover::after { width: 100%; }
 .nav-cta {
   display: inline-flex; align-items: center;
   padding: 12px 28px; min-height: 44px;
@@ -148,11 +156,23 @@ img.emoji {
   display: flex;
   align-items: center;
   background-color: #1a1d14;
+  overflow: hidden;
+}
+/* Background layer behind gradient + text — slow Ken-Burns drift */
+.hero-banner-bg {
+  position: absolute; inset: 0; z-index: 0;
   background-image: url('hero-bg.png');
   background-size: cover;
   background-position: right center;
   background-repeat: no-repeat;
-  overflow: hidden;
+  transform-origin: 70% 50%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .hero-banner-bg { animation: heroKenBurns 26s ease-in-out infinite alternate; }
+  @keyframes heroKenBurns {
+    from { transform: scale(1); }
+    to   { transform: scale(1.06); }
+  }
 }
 /* Left-only gradient — anchors text, leaves spices on the right untouched */
 .hero-banner::before {
@@ -263,9 +283,9 @@ img.emoji {
     min-height: auto;
     flex-direction: column;     /* stack image over text */
     align-items: stretch;
-    background-image: none;     /* stack instead of crop */
     background-color: var(--green-dark);
   }
+  .hero-banner-bg { display: none; } /* mobile uses the photo band instead */
   /* Image becomes a top band so spices stay visible */
   .hero-banner-photo-mobile {
     display: block;
@@ -1037,7 +1057,9 @@ footer {
 
 <!-- ══════════════ HERO BANNER ══════════════ -->
 <section class="hero-banner" id="hero-banner" aria-labelledby="hero-banner-title">
-  <!-- Mobile-only top photo band (desktop uses CSS background) -->
+  <!-- Desktop background layer (Ken-Burns drift) -->
+  <div class="hero-banner-bg" aria-hidden="true"></div>
+  <!-- Mobile-only top photo band -->
   <img src="hero-bg.png" alt="" aria-hidden="true" class="hero-banner-photo-mobile">
 
   <div class="hero-banner-content">
