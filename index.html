@@ -46,6 +46,10 @@ body {
 }
 img { max-width: 100%; display: block; }
 a { color: inherit; text-decoration: none; }
+/* Premium ragged-right (not justified): balance headings, tidy paragraph last lines.
+   Progressive enhancement — ignored by browsers that don't support it. */
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
 ul { list-style: none; }
 
 /* ═══════════════════════════════════════
@@ -445,6 +449,10 @@ img.emoji {
   margin: 0 0 28px;
   overflow: hidden;
   background: var(--cream-dark);
+  /* Soft lift (frames the photo against the cream) + a whisper of hairline */
+  box-shadow:
+    0 0 0 1px rgba(26, 14, 4, 0.06),
+    0 18px 40px -16px rgba(26, 14, 4, 0.28);
 }
 .collection-figure img {
   width: 100%; aspect-ratio: 3 / 2;
@@ -490,7 +498,13 @@ img.emoji {
   font-size: 28px; color: var(--gold-deep);
 }
 @media (prefers-reduced-motion: no-preference) {
+  .collection-figure { transition: box-shadow 0.4s var(--ease-out); }
   .collection-figure img { transition: transform 0.7s var(--ease-out); }
+  .collection-item:hover .collection-figure {
+    box-shadow:
+      0 0 0 1px rgba(26, 14, 4, 0.08),
+      0 26px 54px -18px rgba(26, 14, 4, 0.34);
+  }
   .collection-item:hover .collection-figure img { transform: scale(1.04); }
 }
 
@@ -1078,7 +1092,7 @@ footer {
         <p class="hero-banner-subtitle">The Art of Roasted Spice.</p>
         <div class="hero-banner-rule" aria-hidden="true"></div>
         <p class="hero-banner-body">
-          For more than thirty years, Mala has seasoned family gatherings, wedding feasts and Sunday tables across Mauritius. Roasted, ground and blended by hand, it now begins a new journey beyond our island.
+          For more than thirty years, Mala has seasoned family gatherings, wedding feasts and shared tables across Mauritius. Roasted, ground and blended by hand, it now begins a new journey beyond our island.
         </p>
         <div class="hero-banner-ctas">
           <a href="#order" class="btn-gold btn-bi">
