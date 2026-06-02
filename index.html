@@ -1103,12 +1103,12 @@ img.emoji {
 }
 .order-line {
   display: grid; gap: 8px; align-items: center;
-  grid-template-columns: minmax(0,1fr) 68px 96px 44px;
+  grid-template-columns: minmax(0,1fr) 92px 96px 44px;
   grid-template-areas: "product qty sub remove";
   margin-bottom: 10px;
 }
 .ol-product { grid-area: product; }
-.ol-qty { grid-area: qty; }
+.ol-qty { grid-area: qty; text-align: center; padding-left: 10px; padding-right: 10px; }
 .ol-sub {
   grid-area: sub; text-align: right;
   font-family: 'Cormorant Garamond', serif; font-style: italic;
@@ -1421,7 +1421,7 @@ footer {
       <p class="gift-desc">
         Our signature gift collection. Three of our most loved blends presented in an elegant keepsake box inspired by Mauritian hospitality and tradition.
       </p>
-      <a href="#order" class="gift-cta gift-cta-primary">Enquire Now</a>
+      <a href="#order" class="gift-cta gift-cta-primary">Order Now</a>
     </div>
 
     <!-- Custom / corporate -->
