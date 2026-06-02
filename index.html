@@ -1081,6 +1081,7 @@ body::after {
 }
 .order-form { text-align: left; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.form-row-pq { display: grid; grid-template-columns: 2.4fr 1fr; gap: 16px; }
 .form-group { margin-bottom: 16px; }
 .form-group label {
   display: block;
@@ -1157,7 +1158,7 @@ body::after {
 }
 @media (max-width: 768px) {
   #order { padding: 80px 0; }
-  .form-row { grid-template-columns: 1fr; }
+  .form-row, .form-row-pq { grid-template-columns: 1fr; }
 }
 
 /* ═══════════════════════════════════════
@@ -1535,18 +1536,26 @@ footer {
           <label for="phone">WhatsApp / Phone (optional)</label>
           <input type="tel" id="phone" name="phone" placeholder="+44 7700 000000" autocomplete="tel">
         </div>
-        <div class="form-group">
-          <label for="product">Product Selection *</label>
-          <select id="product" name="product" required aria-required="true" aria-describedby="product-err">
-            <option value="" disabled selected>Choose your order</option>
-            <option value="Masala Grillé — 250g Pouch — Rs 250">Masala Grillé — 250g Pouch — Rs 250</option>
-            <option value="Masala Sans Piment — 250g Pouch — Rs 250">Masala Sans Piment — 250g Pouch — Rs 250</option>
-            <option value="Épices pour Briani Mauricien — 250g Pouch — Rs 250">Épices pour Briani Mauricien — 250g Pouch — Rs 250</option>
-            <option value="Le Trio — Three Pouches — Rs 695">Le Trio — Three Pouches — Rs 695</option>
-            <option value="Coffret Signature — 3×40g Tins — Rs 750">Coffret Signature — 3×40g Tins — Rs 750</option>
-            <option value="Coffret Personnalisé — Custom — From Rs 950">Coffret Personnalisé — Custom — From Rs 950</option>
-          </select>
-          <span class="field-error" id="product-err" role="alert">Please select a product.</span>
+        <div class="form-row-pq">
+          <div class="form-group">
+            <label for="product">Product Selection *</label>
+            <select id="product" name="product" required aria-required="true" aria-describedby="product-err">
+              <option value="" disabled selected>Choose your order</option>
+              <option value="Masala Grillé — 250g Pouch — Rs 250">Masala Grillé — 250g Pouch — Rs 250</option>
+              <option value="Masala Sans Piment — 250g Pouch — Rs 250">Masala Sans Piment — 250g Pouch — Rs 250</option>
+              <option value="Épices pour Briani Mauricien — 250g Pouch — Rs 250">Épices pour Briani Mauricien — 250g Pouch — Rs 250</option>
+              <option value="Le Trio — Three Pouches — Rs 695">Le Trio — Three Pouches — Rs 695</option>
+              <option value="Coffret Signature — 3×40g Tins — Rs 750">Coffret Signature — 3×40g Tins — Rs 750</option>
+              <option value="Coffret Personnalisé — Custom — From Rs 950">Coffret Personnalisé — Custom — From Rs 950</option>
+            </select>
+            <span class="field-error" id="product-err" role="alert">Please select a product.</span>
+          </div>
+          <div class="form-group">
+            <label for="qty">Quantity *</label>
+            <input type="number" id="qty" name="qty" value="1" min="1" max="99" step="1"
+              inputmode="numeric" required aria-required="true" aria-describedby="qty-err">
+            <span class="field-error" id="qty-err" role="alert">Enter a quantity of 1 or more.</span>
+          </div>
         </div>
         <div class="form-group">
           <label for="message">Personalisation Note (optional)</label>
@@ -1706,10 +1715,19 @@ function validateField(input, errId) {
   if (err) err.classList.toggle('show', bad);
   return !bad;
 }
+function validateQty(input, errId) {
+  const err = document.getElementById(errId);
+  const n = parseInt(input.value, 10);
+  const bad = !input.value.trim() || isNaN(n) || n < 1;
+  input.setAttribute('aria-invalid', bad ? 'true' : 'false');
+  if (err) err.classList.toggle('show', bad);
+  return !bad;
+}
 ['fname','lname','email','product'].forEach(name => {
   const el = document.getElementById(name);
   if (el) el.addEventListener('blur', () => validateField(el, name + '-err'));
 });
+document.getElementById('qty').addEventListener('blur', function () { validateQty(this, 'qty-err'); });
 
 // ── Form submit ──
 document.getElementById('orderForm').addEventListener('submit', function(e) {
@@ -1722,15 +1740,18 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
   ];
   let ok = true;
   checks.forEach(c => { if (!validateField(c.el, c.id)) ok = false; });
+  if (!validateQty(this.qty, 'qty-err')) ok = false;
   if (!ok) { const bad = this.querySelector('[aria-invalid="true"]'); if (bad) bad.focus(); return; }
 
   const d = {
     fname: this.fname.value.trim(), lname: this.lname.value.trim(),
     email: this.email.value.trim(), phone: this.phone.value.trim(),
-    product: this.product.value,   message: this.message.value.trim(),
+    product: this.product.value,   qty: this.qty.value.trim(),
+    message: this.message.value.trim(),
   };
   const msg = ['Hello, I would like to pre-order from Mala:','',
-    'Name: ' + d.fname + ' ' + d.lname, 'Product: ' + d.product, 'Email: ' + d.email,
+    'Name: ' + d.fname + ' ' + d.lname, 'Product: ' + d.product, 'Quantity: ' + d.qty,
+    'Email: ' + d.email,
     d.phone ? 'Phone: ' + d.phone : '', d.message ? 'Note: ' + d.message : ''
   ].filter(Boolean).join('\n');
 
