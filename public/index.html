@@ -1365,6 +1365,23 @@ footer {
           <span class="field-error" id="order-err" role="alert">Please choose at least one product.</span>
         </div>
         <div class="form-group">
+          <label for="region">Delivery Region *</label>
+          <select id="region" name="region" required aria-required="true" aria-describedby="region-err region-fee">
+            <option value="" disabled selected>Choose your region</option>
+            <option value="Central &amp; Plaines Wilhems">Central &amp; Plaines Wilhems — Rs 100</option>
+            <option value="North &amp; West Coast">North &amp; West Coast — Rs 200</option>
+            <option value="South &amp; East">South &amp; East — Rs 250</option>
+          </select>
+          <span class="oi-note" id="region-fee">Free over Rs 2,500 — or over Rs 1,000 in Central.</span>
+          <span class="field-error" id="region-err" role="alert">Please choose your delivery region.</span>
+        </div>
+        <div class="form-group">
+          <label for="address">Delivery Address *</label>
+          <textarea id="address" name="address" placeholder="Street, town/village, and any landmark to help us find you"
+            required aria-required="true" autocomplete="street-address" aria-describedby="address-err"></textarea>
+          <span class="field-error" id="address-err" role="alert">Please enter your delivery address.</span>
+        </div>
+        <div class="form-group">
           <label for="message">Personalisation Note (optional)</label>
           <textarea id="message" name="message" placeholder="A name, a message, or a memory for the handwritten card…"></textarea>
         </div>
@@ -1552,10 +1569,14 @@ function validateField(input, errId) {
   if (err) err.classList.toggle('show', bad);
   return !bad;
 }
-['fname','lname','email'].forEach(name => {
+['fname','lname','email','address'].forEach(name => {
   const el = document.getElementById(name);
   if (el) el.addEventListener('blur', () => validateField(el, name + '-err'));
 });
+(function () {
+  const region = document.getElementById('region');
+  if (region) region.addEventListener('change', () => validateField(region, 'region-err'));
+})();
 
 // ── Multi-line order builder ──
 const PRODUCTS = [
@@ -1633,7 +1654,8 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
   e.preventDefault();
   if (this.dataset.sent === '1') return;   // guard: already submitting
   let ok = true;
-  [{ el: this.fname, id: 'fname-err' }, { el: this.lname, id: 'lname-err' }, { el: this.email, id: 'email-err' }]
+  [{ el: this.fname, id: 'fname-err' }, { el: this.lname, id: 'lname-err' }, { el: this.email, id: 'email-err' },
+   { el: this.region, id: 'region-err' }, { el: this.address, id: 'address-err' }]
     .forEach(c => { if (!validateField(c.el, c.id)) ok = false; });
 
   const order = getOrder();
@@ -1655,6 +1677,7 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
   const d = {
     fname: this.fname.value.trim(), lname: this.lname.value.trim(),
     email: this.email.value.trim(), phone: this.phone.value.trim(),
+    region: this.region.value.trim(), address: this.address.value.trim(),
     message: this.message.value.trim(),
   };
   const msg = ['Hello, I would like to place an order with Mala:', '', 'Order:']
@@ -1665,9 +1688,26 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
       'Name: ' + d.fname + ' ' + d.lname,
       'Email: ' + d.email,
       d.phone ? 'Phone: ' + d.phone : '',
+      'Delivery region: ' + d.region,
+      'Delivery address: ' + d.address,
       d.message ? 'Note: ' + d.message : ''
     ])
     .filter(Boolean).join('\n');
+
+  // Best-effort: record the order to the Mala order log (D1) before opening
+  // WhatsApp. If this fails for any reason, the order still goes through.
+  try {
+    fetch('/api/order', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fname: d.fname, lname: d.lname, email: d.email, phone: d.phone,
+        region: d.region, address: d.address,
+        items: order.items, total: order.total, note: d.message
+      }),
+      keepalive: true
+    }).catch(function () {});
+  } catch (e) { /* never block the order */ }
 
   const wrap = document.getElementById('orderFormWrap');
   const succ = document.getElementById('formSuccess');
@@ -1679,6 +1719,34 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     setTimeout(() => { window.open('https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(msg), '_blank'); }, 1200);
   }, 400);
 });
+
+// ── "Order via WhatsApp instead": carry whatever is already filled in ──
+(function () {
+  const btn = document.getElementById('whatsappBtn');
+  if (!btn) return;
+  const form = document.getElementById('orderForm');
+  btn.addEventListener('click', function () {
+    const v = id => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    const order = getOrder();
+    const lines = ['Hello, I would like to place an order with Mala.'];
+    if (order.items.length) {
+      lines.push('', 'Order:');
+      order.items.forEach(i => lines.push(i));
+      lines.push('Order total: ' + fmtRs(order.total) + (order.hasCustom ? ' (+ custom items quoted separately)' : ''));
+    }
+    const name = (v('fname') + ' ' + v('lname')).trim();
+    const details = [
+      name ? 'Name: ' + name : '',
+      v('email') ? 'Email: ' + v('email') : '',
+      v('phone') ? 'Phone: ' + v('phone') : '',
+      v('region') ? 'Delivery region: ' + v('region') : '',
+      v('address') ? 'Delivery address: ' + v('address') : '',
+      v('message') ? 'Note: ' + v('message') : ''
+    ].filter(Boolean);
+    if (details.length) lines.push('', ...details);
+    btn.href = 'https://wa.me/' + WHATSAPP_NUMBER + '?text=' + encodeURIComponent(lines.join('\n'));
+  });
+})();
 </script>
 </body>
 </html>

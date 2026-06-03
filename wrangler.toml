@@ -1,5 +1,12 @@
 name = "mala-spices"
+main = "src/index.js"
 compatibility_date = "2025-05-28"
 
 [assets]
 directory = "./public"
+binding = "ASSETS"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mala-orders"
+database_id = "0bdc5b39-9b3e-4a30-8a2b-d5f5e0e5f6b0"
