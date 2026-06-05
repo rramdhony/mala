@@ -1,5 +1,8 @@
-// Mala — Worker entrypoint.
-// Serves the static site (env.ASSETS) and records orders to D1 (env.DB).
+// Mala website — Worker entrypoint.
+// Serves the static site (env.ASSETS) and forwards pre-orders to the
+// Mala Ops webhook (secret stays server-side, never in the browser).
+
+const OPS_WEBHOOK = 'https://mala-ops-api.ruben-ramdhony.workers.dev/api/webhook/website';
 
 export default {
   async fetch(request, env) {
@@ -21,28 +24,32 @@ async function handleOrder(request, env) {
   };
   try {
     const o = await request.json();
-
-    // Light validation — never block the order, just sanitise.
     const str = (v, max = 2000) => (typeof v === 'string' ? v : '').slice(0, max);
-    const items = Array.isArray(o.items) ? o.items : [];
-    const total = Number.isFinite(o.total) ? Math.round(o.total) : 0;
 
-    await env.DB.prepare(
-      `INSERT INTO orders
-        (created_at, fname, lname, email, phone, region, address, items, total, note)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-    ).bind(
-      new Date().toISOString(),
-      str(o.fname, 100),
-      str(o.lname, 100),
-      str(o.email, 200),
-      str(o.phone, 50),
-      str(o.region, 100),
-      str(o.address, 500),
-      JSON.stringify(items).slice(0, 4000),
-      total,
-      str(o.note, 1000)
-    ).run();
+    // Map the website form to the ops order shape (structured line items).
+    const payload = {
+      source: 'website',
+      customer_name: (str(o.fname, 100) + ' ' + str(o.lname, 100)).trim(),
+      customer_phone: str(o.phone, 50),
+      customer_email: str(o.email, 200),
+      delivery_zone: str(o.region, 100),
+      delivery_address: str(o.address, 500),
+      personalisation_note: str(o.note, 1000),
+      items: Array.isArray(o.items) ? o.items : [],
+    };
+
+    // Forward to the ops system. Best-effort: a failure here must not block
+    // the customer's WhatsApp flow, so we still return ok.
+    try {
+      await fetch(OPS_WEBHOOK, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Webhook-Secret': env.WEBHOOK_SECRET || '',
+        },
+        body: JSON.stringify(payload),
+      });
+    } catch (_) { /* swallow — order still proceeds via WhatsApp */ }
 
     return new Response(JSON.stringify({ ok: true }), { headers: cors });
   } catch (err) {

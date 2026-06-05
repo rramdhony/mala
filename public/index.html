@@ -1580,11 +1580,11 @@ function validateField(input, errId) {
 
 // ── Multi-line order builder ──
 const PRODUCTS = [
-  { label: 'Masala (Piment) — 250g',      price: 250 },
-  { label: 'Masala (Sans Piment) — 250g', price: 250 },
-  { label: 'Briani Mauricien — 250g',   price: 250 },
-  { label: 'Le Trio — 3 Pouches',       price: 695 },
-  { label: 'Coffret Signature — 3×40g', price: 750 },
+  { label: 'Masala (Piment) — 250g',      price: 250, product: 'masala_pimente',     format: '250g_pouch' },
+  { label: 'Masala (Sans Piment) — 250g', price: 250, product: 'masala_sans_piment', format: '250g_pouch' },
+  { label: 'Briani Mauricien — 250g',   price: 250, product: 'briani',             format: '250g_pouch' },
+  { label: 'Le Trio — 3 Pouches',       price: 695, product: 'trio',               format: 'trio_pouch' },
+  { label: 'Coffret Signature — 3×40g', price: 750, product: 'coffret_signature',  format: 'coffret_3' },
 ];
 const QTY_MAX = 300;
 const linesEl  = document.getElementById('orderLines');
@@ -1645,6 +1645,17 @@ function getOrder() {
   });
   return { items: items, total: total, hasCustom: hasCustom };
 }
+// Structured line items for the ops system (product/format/quantity).
+function getStructuredItems() {
+  const out = [];
+  linesEl.querySelectorAll('.order-line').forEach(line => {
+    const item = readLine(line);
+    if (item && item.product.product) {
+      out.push({ product: item.product.product, format: item.product.format, quantity: item.qty });
+    }
+  });
+  return out;
+}
 addBtn.addEventListener('click', () => { linesEl.appendChild(createLine()); recalc(); });
 linesEl.appendChild(createLine());
 recalc();
@@ -1694,7 +1705,7 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
     ])
     .filter(Boolean).join('\n');
 
-  // Best-effort: record the order to the Mala order log (D1) before opening
+  // Best-effort: record the order in the Mala ops system before opening
   // WhatsApp. If this fails for any reason, the order still goes through.
   try {
     fetch('/api/order', {
@@ -1703,7 +1714,7 @@ document.getElementById('orderForm').addEventListener('submit', function(e) {
       body: JSON.stringify({
         fname: d.fname, lname: d.lname, email: d.email, phone: d.phone,
         region: d.region, address: d.address,
-        items: order.items, total: order.total, note: d.message
+        items: getStructuredItems(), note: d.message
       }),
       keepalive: true
     }).catch(function () {});

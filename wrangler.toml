@@ -1,12 +1,11 @@
 name = "mala-spices"
 main = "src/index.js"
 compatibility_date = "2025-05-28"
+account_id = "d1ecd7ea82a6e81ddd3c7a583e4c1b89"
 
 [assets]
 directory = "./public"
 binding = "ASSETS"
 
-[[d1_databases]]
-binding = "DB"
-database_name = "mala-orders"
-database_id = "0bdc5b39-9b3e-4a30-8a2b-d5f5e0e5f6b0"
+# Orders are forwarded to the Mala Ops webhook (see src/index.js).
+# Secret set with: wrangler secret put WEBHOOK_SECRET
