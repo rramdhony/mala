@@ -7,5 +7,9 @@ account_id = "d1ecd7ea82a6e81ddd3c7a583e4c1b89"
 directory = "./public"
 binding = "ASSETS"
 
-# Orders are forwarded to the Mala Ops webhook (see src/index.js).
+# Orders are forwarded to the Mala Ops Worker via a service binding
+# (Worker-to-Worker on the same account; workers.dev subrequests are blocked).
 # Secret set with: wrangler secret put WEBHOOK_SECRET
+[[services]]
+binding = "OPS"
+service = "mala-ops-api"

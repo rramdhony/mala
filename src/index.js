@@ -1,8 +1,6 @@
 // Mala website — Worker entrypoint.
 // Serves the static site (env.ASSETS) and forwards pre-orders to the
-// Mala Ops webhook (secret stays server-side, never in the browser).
-
-const OPS_WEBHOOK = 'https://mala-ops-api.ruben-ramdhony.workers.dev/api/webhook/website';
+// Mala Ops Worker via the OPS service binding (secret stays server-side).
 
 export default {
   async fetch(request, env) {
@@ -38,10 +36,11 @@ async function handleOrder(request, env) {
       items: Array.isArray(o.items) ? o.items : [],
     };
 
-    // Forward to the ops system. Best-effort: a failure here must not block
-    // the customer's WhatsApp flow, so we still return ok.
+    // Forward to the ops Worker via the service binding. Best-effort: a
+    // failure here must not block the customer's WhatsApp flow.
+    let logged = false;
     try {
-      await fetch(OPS_WEBHOOK, {
+      const res = await env.OPS.fetch('https://ops/api/webhook/website', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -49,9 +48,10 @@ async function handleOrder(request, env) {
         },
         body: JSON.stringify(payload),
       });
+      logged = res.ok;
     } catch (_) { /* swallow — order still proceeds via WhatsApp */ }
 
-    return new Response(JSON.stringify({ ok: true }), { headers: cors });
+    return new Response(JSON.stringify({ ok: true, logged }), { headers: cors });
   } catch (err) {
     return new Response(JSON.stringify({ ok: false, error: String(err) }), {
       status: 500,
